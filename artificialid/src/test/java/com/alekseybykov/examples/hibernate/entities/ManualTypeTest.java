@@ -12,17 +12,13 @@ public class ManualTypeTest {
     @Test(expectedExceptions = IdentifierGenerationException.class)
     public void testSaveManualTypeWithoutId() {
         try(Session session = SessionUtil.getSession()) {
-            Long id;
-
             Transaction tx = session.beginTransaction();
 
             ManualType manualType = new ManualType();
             manualType.setName("some name");
 
             session.save(manualType);
-            id = manualType.getId();
-
-            assertNull(id);
+            assertNull(manualType.getId());
 
             tx.commit();
         }
@@ -31,8 +27,6 @@ public class ManualTypeTest {
     @Test
     public void testSaveManualTypeWithId() {
         try(Session session = SessionUtil.getSession()) {
-            Long id;
-
             Transaction tx = session.beginTransaction();
 
             ManualType manualType = new ManualType();
@@ -40,9 +34,8 @@ public class ManualTypeTest {
             manualType.setName("some another name");
 
             session.save(manualType);
-            id = manualType.getId();
-
-            assertNotNull(id);
+            assertNotNull(manualType.getId());
+            assertEquals(manualType.getName(), "some another name");
 
             tx.commit();
         }
