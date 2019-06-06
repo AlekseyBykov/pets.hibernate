@@ -10,7 +10,7 @@ import static org.testng.Assert.*;
 public class ManualTypeTest {
 
     @Test(expectedExceptions = IdentifierGenerationException.class)
-    public void test__ShouldPass__saveManualTypeWithoutId() {
+    public void testSaveManualTypeWithoutId() {
         try(Session session = SessionUtil.getSession()) {
             Long id;
 
@@ -29,7 +29,7 @@ public class ManualTypeTest {
     }
 
     @Test
-    public void test__ShouldPass__saveManualTypeWithId() {
+    public void testSaveManualTypeWithId() {
         try(Session session = SessionUtil.getSession()) {
             Long id;
 
