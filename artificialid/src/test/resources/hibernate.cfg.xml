@@ -10,9 +10,12 @@
         <property name="connection.username">sa</property>
         <property name="connection.password">root</property>
         <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">create-drop</property>
-        <mapping class="entities.ManualType"/>
+
+        <mapping class="com.alekseybykov.examples.hibernate.entities.ManualType"/>
+        <mapping class="com.alekseybykov.examples.hibernate.entities.IdentityType"/>
     </session-factory>
 
 </hibernate-configuration>

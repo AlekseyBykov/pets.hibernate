@@ -1,4 +1,9 @@
 .idea/*
+
 artificialid/*.iml
 artificialid/target/
+
+util/*.iml
+util/target/
+
 target/

@@ -1,4 +1,4 @@
-package entities;
+package com.alekseybykov.examples.hibernate.entities;
 
 import lombok.Data;
 import javax.persistence.*;

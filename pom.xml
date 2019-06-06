@@ -12,6 +12,7 @@
 
     <modules>
         <module>artificialid</module>
+        <module>util</module>
     </modules>
 
     <properties>

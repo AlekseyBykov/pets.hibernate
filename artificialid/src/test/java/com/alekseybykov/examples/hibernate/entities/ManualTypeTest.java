@@ -1,30 +1,17 @@
-package entities;
+package com.alekseybykov.examples.hibernate.entities;
 
+import com.alekseybykov.examples.hibernate.utils.SessionUtil;
 import org.hibernate.*;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.*;
 import org.hibernate.id.IdentifierGenerationException;
 import org.testng.annotations.*;
 
 import static org.testng.Assert.*;
 
 public class ManualTypeTest {
-    private SessionFactory sessionFactory;
-
-    @BeforeClass
-    public void setup() {
-        StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure()
-                .build();
-
-        sessionFactory = new MetadataSources(registry)
-                .buildMetadata()
-                .buildSessionFactory();
-    }
 
     @Test(expectedExceptions = IdentifierGenerationException.class)
     public void test__ShouldPass__saveManualTypeWithoutId() {
-        try(Session session = sessionFactory.openSession()) {
+        try(Session session = SessionUtil.getSession()) {
             Long id;
 
             Transaction tx = session.beginTransaction();
@@ -43,7 +30,7 @@ public class ManualTypeTest {
 
     @Test
     public void test__ShouldPass__saveManualTypeWithId() {
-        try(Session session = sessionFactory.openSession()) {
+        try(Session session = SessionUtil.getSession()) {
             Long id;
 
             Transaction tx = session.beginTransaction();
