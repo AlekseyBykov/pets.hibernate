@@ -6,10 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class ManualType {
+public class IdWithNoname {
     @Id
     private Long id;
 
     @Column
-    private String name;
+    private String noname;
 }
