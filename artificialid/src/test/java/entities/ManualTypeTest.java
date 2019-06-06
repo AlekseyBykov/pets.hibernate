@@ -6,7 +6,7 @@ import org.hibernate.boot.registry.*;
 import org.hibernate.id.IdentifierGenerationException;
 import org.testng.annotations.*;
 
-//import static org.testng.Assert.*;
+import static org.testng.Assert.*;
 
 public class ManualTypeTest {
     private SessionFactory sessionFactory;
@@ -23,8 +23,10 @@ public class ManualTypeTest {
     }
 
     @Test(expectedExceptions = IdentifierGenerationException.class)
-    public void test__shouldPass__saveManualTypeWithoutId() {
+    public void test__ShouldPass__saveManualTypeWithoutId() {
         try(Session session = sessionFactory.openSession()) {
+            Long id = null;
+
             Transaction tx = session.beginTransaction();
 
             ManualType manualType = new ManualType();
@@ -32,13 +34,19 @@ public class ManualTypeTest {
 
             session.save(manualType);
 
+            id = manualType.getId();
+
+            assertNull(id);
+
             tx.commit();
         }
     }
 
     @Test
-    public void test__shouldPass__saveManualTypeWithId() {
+    public void test__ShouldPass__saveManualTypeWithId() {
         try(Session session = sessionFactory.openSession()) {
+            Long id = null;
+
             Transaction tx = session.beginTransaction();
 
             ManualType manualType = new ManualType();
@@ -46,6 +54,9 @@ public class ManualTypeTest {
             manualType.setName("some another name");
 
             session.save(manualType);
+            id = manualType.getId();
+
+            assertNotNull(id);
 
             tx.commit();
         }
