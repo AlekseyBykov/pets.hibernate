@@ -25,7 +25,7 @@ public class ManualTypeTest {
     @Test(expectedExceptions = IdentifierGenerationException.class)
     public void test__ShouldPass__saveManualTypeWithoutId() {
         try(Session session = sessionFactory.openSession()) {
-            Long id = null;
+            Long id;
 
             Transaction tx = session.beginTransaction();
 
@@ -33,7 +33,6 @@ public class ManualTypeTest {
             manualType.setName("some name");
 
             session.save(manualType);
-
             id = manualType.getId();
 
             assertNull(id);
@@ -45,7 +44,7 @@ public class ManualTypeTest {
     @Test
     public void test__ShouldPass__saveManualTypeWithId() {
         try(Session session = sessionFactory.openSession()) {
-            Long id = null;
+            Long id;
 
             Transaction tx = session.beginTransaction();
 
