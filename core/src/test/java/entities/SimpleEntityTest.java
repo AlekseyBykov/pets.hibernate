@@ -39,5 +39,39 @@ public class SimpleEntityTest {
         }
 
         assertNotEquals(id, simpleEntity.getId());
+        assertEquals(simpleEntity.getName(), "some another name");
+    }
+
+    @Test
+    public void testSaveOrUpdateSimpleEntity() {
+        Long id;
+        SimpleEntity simpleEntity;
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            simpleEntity = new SimpleEntity();
+            simpleEntity.setName("some another string");
+
+            session.save(simpleEntity);
+            id = simpleEntity.getId();
+
+            assertNotNull(id);
+            assertEquals(simpleEntity.getName(), "some another string");
+
+            tx.commit();
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            simpleEntity.setName("string");
+
+            session.saveOrUpdate(simpleEntity);
+            tx.commit();
+        }
+
+        assertEquals(id, simpleEntity.getId());
+        assertEquals(simpleEntity.getName(), "string");
     }
 }
