@@ -14,8 +14,8 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">create-drop</property>
 
-        <mapping class="com.alekseybykov.examples.hibernate.entities.ManualType"/>
-        <mapping class="com.alekseybykov.examples.hibernate.entities.IdentityType"/>
+        <mapping class="entities.ManualType"/>
+        <mapping class="entities.IdentityType"/>
     </session-factory>
 
 </hibernate-configuration>

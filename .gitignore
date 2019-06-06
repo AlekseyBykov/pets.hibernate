@@ -1,7 +1,8 @@
+*.iml
 .idea/*
 
-artificialid/*.iml
-artificialid/target/
+core/*.iml
+core/target/
 
 util/*.iml
 util/target/

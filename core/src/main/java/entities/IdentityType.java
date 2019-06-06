@@ -1,10 +1,10 @@
-package com.alekseybykov.examples.hibernate.entities;
+package entities;
 
 import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity(name = "IdentityType")
+@Entity
 @Data
 public class IdentityType {
     @Id

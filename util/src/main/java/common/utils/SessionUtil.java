@@ -1,4 +1,4 @@
-package com.alekseybykov.examples.hibernate.utils;
+package common.utils;
 
 import org.hibernate.*;
 import org.hibernate.boot.MetadataSources;

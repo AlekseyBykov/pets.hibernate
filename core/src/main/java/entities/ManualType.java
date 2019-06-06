@@ -1,9 +1,10 @@
-package com.alekseybykov.examples.hibernate.entities;
+package entities;
 
 import lombok.Data;
+
 import javax.persistence.*;
 
-@Entity(name = "ManualType")
+@Entity
 @Data
 public class ManualType {
     @Id

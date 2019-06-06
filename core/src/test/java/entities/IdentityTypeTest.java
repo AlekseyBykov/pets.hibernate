@@ -1,6 +1,6 @@
-package com.alekseybykov.examples.hibernate.entities;
+package entities;
 
-import com.alekseybykov.examples.hibernate.utils.SessionUtil;
+import common.utils.SessionUtil;
 import org.hibernate.*;
 import org.testng.annotations.Test;
 
