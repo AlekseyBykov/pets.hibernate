@@ -9,6 +9,40 @@ import static org.testng.Assert.*;
 public class SimpleEntityTest {
 
     @Test
+    public void testForEquality() {
+        Long id;
+        SimpleEntity simpleEntity;
+
+        try (Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            simpleEntity = new SimpleEntity();
+            simpleEntity.setName("string");
+
+            session.save(simpleEntity);
+            id = simpleEntity.getId();
+
+            assertNotNull(id);
+            assertEquals(simpleEntity.getName(), "string");
+
+            tx.commit();
+        }
+
+        try (Session session = SessionUtil.getSession()) {
+            SimpleEntity firstSimpleEntity = session.load(SimpleEntity.class, id);
+            assertEquals(firstSimpleEntity.getName(), "string");
+
+            SimpleEntity secondSimpleEntity = session.load(SimpleEntity.class, id);
+
+            assertEquals(firstSimpleEntity, secondSimpleEntity);
+            assertTrue(firstSimpleEntity == secondSimpleEntity);
+
+            assertEquals(simpleEntity, firstSimpleEntity);
+            assertFalse(simpleEntity == firstSimpleEntity);
+        }
+    }
+
+    @Test
     public void testSaveSimpleEntity() {
         Long id;
         SimpleEntity simpleEntity;
