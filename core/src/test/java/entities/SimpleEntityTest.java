@@ -13,7 +13,7 @@ public class SimpleEntityTest {
         Long id;
         SimpleEntity simpleEntity;
 
-        try (Session session = SessionUtil.getSession()) {
+        try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             simpleEntity = new SimpleEntity();
@@ -28,7 +28,7 @@ public class SimpleEntityTest {
             tx.commit();
         }
 
-        try (Session session = SessionUtil.getSession()) {
+        try(Session session = SessionUtil.getSession()) {
             SimpleEntity firstSimpleEntity = session.load(SimpleEntity.class, id);
             assertEquals(firstSimpleEntity.getName(), "string");
 
@@ -107,5 +107,29 @@ public class SimpleEntityTest {
 
         assertEquals(id, simpleEntity.getId());
         assertEquals(simpleEntity.getName(), "string");
+    }
+
+    @Test(expectedExceptions = ObjectNotFoundException.class)
+    public void testLoadMissingEntity() {
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            SimpleEntity missingEntity = session.load(SimpleEntity.class, 100L);
+            assertNull(missingEntity);
+
+            tx.commit();
+        }
+    }
+
+    @Test
+    public void testGetMissingEntity() {
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            SimpleEntity missingEntity = session.get(SimpleEntity.class, 100L);
+            assertNull(missingEntity);
+
+            tx.commit();
+        }
     }
 }
