@@ -3,63 +3,84 @@ package entities;
 import common.utils.SessionUtil;
 import org.hibernate.*;
 import org.hibernate.id.IdentifierGenerationException;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import static org.testng.Assert.*;
 
+
 public class CoreConceptsTest {
 
-    @Test
-    public void testForIdentityAndEquality() {
-        Long id;
-        EntityWithId entity;
-
+    @BeforeSuite
+    public void saveEntities() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            entity = new EntityWithId();
-            entity.setName("A");
+            FirstEntity firstEntity = new FirstEntity();
+            firstEntity.setName("First entity");
 
-            session.save(entity);
-            id = entity.getId();
+            session.save(firstEntity);
 
-            assertNotNull(id);
-            assertEquals(entity.getName(), "A");
+            assertNotNull(firstEntity.getId());
+            assertEquals(firstEntity.getName(), "First entity");
+
+            SecondEntity secondEntity = new SecondEntity();
+            secondEntity.setId(1L);
+            secondEntity.setName("Second entity");
+
+            session.save(secondEntity);
+
+            assertNotNull(secondEntity.getId());
+            assertEquals(secondEntity.getName(), "Second entity");
 
             tx.commit();
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            EntityWithId firstEntity = session.load(EntityWithId.class, id);
-            assertEquals(firstEntity.getName(), "A");
-
-            EntityWithId secondEntity = session.load(EntityWithId.class, id);
-            assertEquals(secondEntity.getName(), "A");
-
-            assertEquals(firstEntity, secondEntity);
-            assertTrue(firstEntity == secondEntity);
-
-            assertEquals(entity, firstEntity);
-            assertFalse(entity == firstEntity);
         }
     }
 
-    @Test
-    public void testSaveEntity() {
+    @Test(priority=0)
+    public void testForIdentityAndEquality() {
         Long id;
-        EntityWithId entity;
+        SecondEntity entity0;
+
+        try(Session session = SessionUtil.getSession()) {
+            entity0 = session.load(SecondEntity.class, 1L);
+            id = entity0.getId();
+
+            assertEquals(id, Long.valueOf(1L));
+            assertEquals(entity0.getName(), "Second entity");
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            SecondEntity entity1 = session.load(SecondEntity.class, id);
+            assertEquals(entity1.getName(), "Second entity");
+            assertEquals(entity1.getId(), Long.valueOf(1L));
+
+            SecondEntity entity2 = session.load(SecondEntity.class, id);
+            assertEquals(entity2.getName(), "Second entity");
+            assertEquals(entity2.getId(), Long.valueOf(1L));
+
+            assertEquals(entity1, entity2);
+            assertTrue(entity2 == entity1);
+
+            assertEquals(entity0, entity1);
+            assertFalse(entity0 == entity1);
+        }
+    }
+
+    @Test(priority=1)
+    public void testDoubleSaveEntity() {
+        Long id;
+        FirstEntity entity;
 
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            entity = new EntityWithId();
-            entity.setName("B");
+            entity = new FirstEntity();
+            entity.setName("Third entity");
 
             session.save(entity);
             id = entity.getId();
 
             assertNotNull(id);
-            assertEquals(entity.getName(), "B");
 
             tx.commit();
         }
@@ -67,48 +88,30 @@ public class CoreConceptsTest {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            entity.setName("C");
-
+            entity.setName("Fourth entity");
             session.save(entity);
 
             tx.commit();
         }
 
         assertNotEquals(id, entity.getId());
-        assertEquals(entity.getName(), "C");
+        assertEquals(entity.getName(), "Fourth entity");
     }
 
-    @Test
+    @Test(priority=2)
     public void testSaveOrUpdateEntity() {
-        Long id;
-        EntityWithId entity;
-
         try(Session session = SessionUtil.getSession()) {
+            SecondEntity entity = session.load(SecondEntity.class, 1L);
             Transaction tx = session.beginTransaction();
 
-            entity = new EntityWithId();
-            entity.setName("D");
-
-            session.save(entity);
-            id = entity.getId();
-
-            assertNotNull(id);
-            assertEquals(entity.getName(), "D");
-
-            tx.commit();
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            entity.setName("E");
+            entity.setName("Updated entity");
 
             session.saveOrUpdate(entity);
             tx.commit();
-        }
 
-        assertEquals(id, entity.getId());
-        assertEquals(entity.getName(), "E");
+            assertEquals(entity.getId(), Long.valueOf(1L));
+            assertEquals(entity.getName(), "Updated entity");
+        }
     }
 
     @Test(expectedExceptions = ObjectNotFoundException.class)
@@ -116,7 +119,7 @@ public class CoreConceptsTest {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            EntityWithId missingEntity = session.load(EntityWithId.class, 100L);
+            FirstEntity missingEntity = session.load(FirstEntity.class, 100L);
             assertNull(missingEntity);
 
             tx.commit();
@@ -128,24 +131,24 @@ public class CoreConceptsTest {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            EntityWithId missingEntity = session.get(EntityWithId.class, 100L);
+            FirstEntity missingEntity = session.get(FirstEntity.class, 100L);
             assertNull(missingEntity);
 
             tx.commit();
         }
     }
 
-    @Test
+    @Test(priority=3)
     public void firstTestSaveEntityWithoutExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            EntityWithId entity = new EntityWithId();
-            entity.setName("F");
+            FirstEntity entity = new FirstEntity();
+            entity.setName("Another first entity");
 
             session.save(entity);
             assertNotNull(entity.getId());
-            assertEquals(entity.getName(), "F");
+            assertEquals(entity.getName(), "Another first entity");
 
             tx.commit();
         }
@@ -156,8 +159,8 @@ public class CoreConceptsTest {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            EntityWithoutId entity = new EntityWithoutId();
-            entity.setName("G");
+            SecondEntity entity = new SecondEntity();
+            entity.setName("Another second entity");
 
             session.save(entity);
             assertNull(entity.getId());
@@ -166,66 +169,39 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test
+    @Test(priority=4)
     public void thirdTestSaveEntityWithExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            EntityWithoutId entity = new EntityWithoutId();
-            entity.setId(200L);
-            entity.setName("H");
+            SecondEntity entity = new SecondEntity();
+            entity.setId(2L);
+            entity.setName("Another second entity");
 
             session.save(entity);
             assertNotNull(entity.getId());
-            assertEquals(entity.getName(), "H");
+            assertEquals(entity.getName(), "Another second entity");
 
             tx.commit();
         }
     }
 
-    @Test
+    @Test(priority=5)
     public void testMergeEntity() {
-        EntityWithoutId entity;
-        Long id;
-
         try(Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
+            SecondEntity entity = session.load(SecondEntity.class, 1L);
+            entity.setName("Merged to the database entity");
 
-            entity = new EntityWithoutId();
-
-            entity.setId(12L);
-            entity.setName("I");
-
-            session.save(entity);
-
-            id = entity.getId();
-
-            tx.commit();
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            entity = session.load(EntityWithoutId.class, id);
-
-            assertEquals(entity.getName(), "I");
-            assertEquals(entity.getId(), Long.valueOf(12L));
-        }
-
-        entity.setName("J");
-
-        try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             session.merge(entity);
 
             tx.commit();
-        }
 
-        try(Session session = SessionUtil.getSession()) {
-            entity = session.load(EntityWithoutId.class, id);
+            entity = session.load(SecondEntity.class, 1L);
 
-            assertEquals(entity.getName(), "J");
-            assertEquals(entity.getId(), Long.valueOf(12L));
+            assertEquals(entity.getName(), "Merged to the database entity");
+            assertEquals(entity.getId(), Long.valueOf(1L));
         }
     }
-
 }

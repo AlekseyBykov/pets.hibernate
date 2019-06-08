@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class EntityWithoutId {
+public class SecondEntity {
     @Id
     private Long id;
 
