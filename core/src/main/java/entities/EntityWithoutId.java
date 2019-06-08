@@ -6,9 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class IdWithIdentity {
+public class EntityWithoutId {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

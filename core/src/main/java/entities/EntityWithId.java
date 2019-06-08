@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class IdWithoutIdentity {
+public class EntityWithId {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
