@@ -182,4 +182,50 @@ public class CoreConceptsTest {
             tx.commit();
         }
     }
+
+    @Test
+    public void testMergeEntity() {
+        EntityWithoutId entity;
+        Long id;
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            entity = new EntityWithoutId();
+
+            entity.setId(12L);
+            entity.setName("I");
+
+            session.save(entity);
+
+            id = entity.getId();
+
+            tx.commit();
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            entity = session.load(EntityWithoutId.class, id);
+
+            assertEquals(entity.getName(), "I");
+            assertEquals(entity.getId(), Long.valueOf(12L));
+        }
+
+        entity.setName("J");
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            session.merge(entity);
+
+            tx.commit();
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            entity = session.load(EntityWithoutId.class, id);
+
+            assertEquals(entity.getName(), "J");
+            assertEquals(entity.getId(), Long.valueOf(12L));
+        }
+    }
+
 }
