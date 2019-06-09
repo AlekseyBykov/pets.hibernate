@@ -1,8 +1,6 @@
-package entities.mapping.unidirectional.manytoone;
+package entities.mapping.manytoone.unidirectional;
 
 import common.utils.SessionUtil;
-import entities.mapping.unidirectional.manytoone.Department;
-import entities.mapping.unidirectional.manytoone.Employee;
 import org.hibernate.*;
 import org.hibernate.query.Query;
 import org.testng.annotations.Test;
@@ -22,17 +20,17 @@ public class ManyToOneTest {
         department.setDeptName("Database development department");
 
         Employee firstEmployee = new Employee();
-        firstEmployee.setFirstName("First Employee");
+        firstEmployee.setFirstName("First Student");
         firstEmployee.setSalary(10d);
         firstEmployee.setDepartment(department);
 
         Employee secondEmployee = new Employee();
-        secondEmployee.setFirstName("Second Employee");
+        secondEmployee.setFirstName("Second Student");
         secondEmployee.setSalary(15d);
         secondEmployee.setDepartment(department);
 
         Employee thirdEmployee = new Employee();
-        thirdEmployee.setFirstName("Third Employee");
+        thirdEmployee.setFirstName("Third Student");
         thirdEmployee.setSalary(20d);
         thirdEmployee.setDepartment(department);
 
