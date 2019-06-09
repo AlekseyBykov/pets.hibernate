@@ -1,9 +1,14 @@
 package entities;
 
 import common.utils.SessionUtil;
+import entities.core.FirstEntity;
+import entities.core.SecondEntity;
 import org.hibernate.*;
 import org.hibernate.id.IdentifierGenerationException;
+import org.hibernate.query.Query;
 import org.testng.annotations.*;
+
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -240,5 +245,88 @@ public class CoreConceptsTest {
 
         assertEquals(refreshedEntity.getName(), "Modified entity");
         assertEquals(refreshedEntity.getId(), Long.valueOf(1L));
+    }
+
+    @Test(priority = 8)
+    public void testDirtySession() {
+        SecondEntity entity;
+
+        try(Session session = SessionUtil.getSession()) {
+            entity = session.load(SecondEntity.class, 1L);
+
+            assertFalse(session.isDirty());
+
+            entity.setName("some changes");
+
+            assertTrue(session.isDirty());
+        }
+    }
+
+    @Test(priority = 9)
+    public void testDeletePersistentEntityWithLoadingToMemory() {
+        SecondEntity entity;
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+            entity = session.load(SecondEntity.class, 1L);
+
+            session.delete(entity);
+
+            tx.commit();
+        }
+
+        assertNotNull(entity);
+
+        try(Session session = SessionUtil.getSession()) {
+            entity = session.get(SecondEntity.class, 1L);
+        }
+
+        assertNull(entity);
+    }
+
+    @Test(priority = 10)
+    public void testDeleteThroughTransientObjectWithLoadingToMemory() {
+        SecondEntity entity = new SecondEntity();
+        entity.setId(2L);
+        entity.setName("for removing");
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            session.delete(entity);
+
+            tx.commit();
+        }
+
+        assertNotNull(entity);
+
+        try(Session session = SessionUtil.getSession()) {
+            entity = session.get(SecondEntity.class, 2L);
+        }
+
+        assertNull(entity);
+    }
+
+    @AfterSuite
+    public void bulkDeleteWithoutLoadingToMemory() {
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            session.createQuery("delete from FirstEntity").executeUpdate();
+            session.createQuery("delete from SecondEntity").executeUpdate();
+
+            tx.commit();
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            Query<FirstEntity> queryForFirstEntities = session.createQuery("from FirstEntity", FirstEntity.class);
+            List<FirstEntity> listOfFirstEntities = queryForFirstEntities.list();
+
+            assertTrue(listOfFirstEntities.size() == 0);
+
+            Query<SecondEntity> queryForSecondEntities = session.createQuery("from SecondEntity", SecondEntity.class);
+            List<SecondEntity> listOfSecondEntities = queryForSecondEntities.list();
+
+            assertTrue(listOfSecondEntities.size() == 0);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package entities;
+package entities.core;
 
 import lombok.Data;
 
@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class SecondEntity {
+public class FirstEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
