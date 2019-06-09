@@ -1,4 +1,4 @@
-package entities;
+package entities.core;
 
 import common.utils.SessionUtil;
 import entities.core.FirstEntity;
