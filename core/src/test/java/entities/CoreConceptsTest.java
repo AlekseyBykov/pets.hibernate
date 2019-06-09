@@ -36,7 +36,7 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority=0)
+    @Test(priority = 0)
     public void testForIdentityAndEquality() {
         Long id;
         SecondEntity entity0;
@@ -66,7 +66,7 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority=1)
+    @Test(priority = 1)
     public void testDoubleSaveEntity() {
         Long id;
         FirstEntity entity;
@@ -98,7 +98,7 @@ public class CoreConceptsTest {
         assertEquals(entity.getName(), "Fourth entity");
     }
 
-    @Test(priority=2)
+    @Test(priority = 2)
     public void testSaveOrUpdateEntity() {
         try(Session session = SessionUtil.getSession()) {
             SecondEntity entity = session.load(SecondEntity.class, 1L);
@@ -138,7 +138,7 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority=3)
+    @Test(priority = 3)
     public void firstTestSaveEntityWithoutExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
@@ -169,7 +169,7 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority=4)
+    @Test(priority = 4)
     public void thirdTestSaveEntityWithExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
@@ -186,7 +186,7 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority=5)
+    @Test(priority = 5)
     public void testMergeEntity() {
         try(Session session = SessionUtil.getSession()) {
             SecondEntity entity = session.load(SecondEntity.class, 1L);
@@ -203,5 +203,42 @@ public class CoreConceptsTest {
             assertEquals(entity.getName(), "Merged to the database entity");
             assertEquals(entity.getId(), Long.valueOf(1L));
         }
+    }
+
+    @Test(priority = 6)
+    public void testSaveChangesOnPersistentState() {
+        SecondEntity entity;
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            entity = session.load(SecondEntity.class, 1L);
+            entity.setName("Modified entity");
+
+            tx.commit();
+        }
+
+        assertEquals(entity.getName(), "Modified entity");
+        assertEquals(entity.getId(), Long.valueOf(1L));
+    }
+
+    @Test(priority = 7)
+    public void testRefreshEntity() {
+        SecondEntity refreshedEntity;
+
+        try(Session session = SessionUtil.getSession()) {
+            refreshedEntity = session.load(SecondEntity.class, 1L);
+            refreshedEntity.setName("out of synch");
+        }
+
+        assertEquals(refreshedEntity.getName(), "out of synch");
+        assertEquals(refreshedEntity.getId(), Long.valueOf(1L));
+
+        try(Session session = SessionUtil.getSession()) {
+            session.refresh(refreshedEntity);
+        }
+
+        assertEquals(refreshedEntity.getName(), "Modified entity");
+        assertEquals(refreshedEntity.getId(), Long.valueOf(1L));
     }
 }
