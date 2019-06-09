@@ -1,4 +1,4 @@
-package entities.mapping.one2one;
+package entities.mapping.one2one.unidirectional;
 
 import common.utils.SessionUtil;
 import entities.mapping.one2one.unidirectional.*;
@@ -7,6 +7,7 @@ import org.hibernate.*;
 import org.hibernate.query.Query;
 import org.testng.annotations.Test;
 
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
@@ -38,6 +39,17 @@ public class OneToOneTest {
             List<Person> listOfPersons = queryForPersons.list();
 
             assertTrue(listOfPersons.size() == 1);
+        }
+    }
+
+    @Test(priority = 1)
+    public void readByUsingCriteria() {
+        try(Session session = SessionUtil.getSession()) {
+            CriteriaQuery<Person> criteriaQuery = session.getCriteriaBuilder().createQuery(Person.class);
+            criteriaQuery.from(Person.class);
+
+            List<Person> persons = session.createQuery(criteriaQuery).getResultList();
+            assertTrue(persons.size() == 1);
         }
     }
 }

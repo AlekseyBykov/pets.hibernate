@@ -1,21 +1,20 @@
 package entities.mapping.many2one.bidirectional;
 
 import common.utils.SessionUtil;
-import org.apache.commons.lang.ClassUtils;
 import org.hibernate.*;
-import org.hibernate.query.Query;
 import org.testng.annotations.Test;
 
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 
 public class ManyToOneTest {
-    @Test
-    public void testSaveManyToOneBidirectionalRelationship() {
 
+    @Test(priority = 0)
+    public void testSaveManyToOneBidirectionalRelationship() {
         University university = new University();
         university.setName("University");
 
@@ -46,34 +45,39 @@ public class ManyToOneTest {
 
             tx.commit();
         }
+    }
 
+    @Test(priority = 1)
+    public void readChildRecordsThroughParent() {
         try(Session session = SessionUtil.getSession()) {
-            Query<Student> queryForStudents = session.createQuery(
-                String.format("from %s ", ClassUtils.getShortClassName(Student.class))
-            );
+            CriteriaQuery<University> criteriaQuery = session.getCriteriaBuilder().createQuery(University.class);
+            criteriaQuery.from(University.class);
 
-            List<Student> listOfStudents = queryForStudents.list();
+            University university = session.createQuery(criteriaQuery).uniqueResult();
+            assertNotNull(university);
 
-            assertTrue(listOfStudents.size() == 3);
+            List<Student> students = university.getStudents();
+            assertNotNull(students);
+            assertTrue(students.size() == 3);
+        }
+    }
 
-            Set<University> universities = listOfStudents.stream()
+    @Test(priority = 2)
+    public void readParentRecordThroughChilds() {
+        try(Session session = SessionUtil.getSession()) {
+            CriteriaQuery<Student> criteriaQuery = session.getCriteriaBuilder().createQuery(Student.class);
+            criteriaQuery.from(Student.class);
+
+            List<Student> students = session.createQuery(criteriaQuery).getResultList();
+            assertNotNull(students);
+
+            assertTrue(students.size() == 3);
+
+            Set<University> universities = students.stream()
                     .map(Student::getUniversity)
                     .collect(Collectors.toSet());
 
             assertTrue(universities.size() == 1);
-
-            Query<University> queryForUniversity = session.createQuery(
-                String.format("from %s ", ClassUtils.getShortClassName(University.class))
-            );
-
-            List<University> listOfUniversities = queryForUniversity.list();
-
-            assertTrue(listOfUniversities.size() == 1);
-
-            University universityEntity = listOfUniversities.get(0);
-            List<Student> studentList = universityEntity.getStudents();
-
-            assertTrue(studentList.size() == 3);
         }
     }
 }
