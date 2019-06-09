@@ -1,4 +1,4 @@
-package entities.mapping.manytoone.unidirectional;
+package entities.mapping.many2one.unidirectional;
 
 import lombok.Data;
 

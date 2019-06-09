@@ -17,10 +17,12 @@
         <mapping class="entities.core.SecondEntity"/>
         <mapping class="entities.core.FirstEntity"/>
 
-        <mapping class="entities.mapping.manytoone.unidirectional.Department"/>
-        <mapping class="entities.mapping.manytoone.unidirectional.Employee"/>
-        <mapping class="entities.mapping.manytoone.bidirectional.University"/>
-        <mapping class="entities.mapping.manytoone.bidirectional.Student"/>
+        <mapping class="entities.mapping.many2one.unidirectional.Department"/>
+        <mapping class="entities.mapping.many2one.unidirectional.Employee"/>
+        <mapping class="entities.mapping.many2one.bidirectional.University"/>
+        <mapping class="entities.mapping.many2one.bidirectional.Student"/>
+        <mapping class="entities.mapping.one2one.unidirectional.Person"/>
+        <mapping class="entities.mapping.one2one.unidirectional.Passport"/>
 
     </session-factory>
 
