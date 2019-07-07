@@ -1,4 +1,4 @@
-package entities.mapping.one2one.bidirectional;
+package entities.mapping.one2one.fkassoc.bidirectional;
 
 import lombok.Data;
 

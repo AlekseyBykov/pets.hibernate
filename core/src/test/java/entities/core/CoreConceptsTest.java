@@ -1,8 +1,6 @@
 package entities.core;
 
 import common.utils.SessionUtil;
-import entities.core.FirstEntity;
-import entities.core.SecondEntity;
 import org.hibernate.*;
 import org.hibernate.id.IdentifierGenerationException;
 import org.hibernate.query.Query;

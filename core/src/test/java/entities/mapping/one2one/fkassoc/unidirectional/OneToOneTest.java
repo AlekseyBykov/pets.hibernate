@@ -1,7 +1,6 @@
-package entities.mapping.one2one.unidirectional;
+package entities.mapping.one2one.fkassoc.unidirectional;
 
 import common.utils.SessionUtil;
-import entities.mapping.one2one.unidirectional.*;
 import org.apache.commons.lang.ClassUtils;
 import org.hibernate.*;
 import org.hibernate.query.Query;

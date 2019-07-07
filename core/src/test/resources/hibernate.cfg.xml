@@ -21,10 +21,10 @@
         <mapping class="entities.mapping.many2one.unidirectional.Employee"/>
         <mapping class="entities.mapping.many2one.bidirectional.University"/>
         <mapping class="entities.mapping.many2one.bidirectional.Student"/>
-        <mapping class="entities.mapping.one2one.unidirectional.Person"/>
-        <mapping class="entities.mapping.one2one.unidirectional.Passport"/>
-        <mapping class="entities.mapping.one2one.bidirectional.Book"/>
-        <mapping class="entities.mapping.one2one.bidirectional.Publisher"/>
+        <mapping class="entities.mapping.one2one.fkassoc.unidirectional.Person"/>
+        <mapping class="entities.mapping.one2one.fkassoc.unidirectional.Passport"/>
+        <mapping class="entities.mapping.one2one.fkassoc.bidirectional.Book"/>
+        <mapping class="entities.mapping.one2one.fkassoc.bidirectional.Publisher"/>
 
     </session-factory>
 
