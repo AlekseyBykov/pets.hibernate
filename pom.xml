@@ -21,12 +21,15 @@
         <hibernate-core.version>5.2.17.Final</hibernate-core.version>
         <sqlserver.version>6.1.0.jre8</sqlserver.version>
         <testng.version>6.8</testng.version>
-        <surefire.version>2.14.1</surefire.version>
+        <compiler.plugin.version>3.8.1</compiler.plugin.version>
+        <surefire.version>2.21.0</surefire.version>
+        <testng.verbose>0</testng.verbose>
         <lombok.version>1.18.0</lombok.version>
     </properties>
 
     <name>hibernate</name>
-    <url>https://alekseybykov.com</url>
+    <description>Test suite for various Hibernate concepts.</description>
+    <url>https://alekseybykov.github.io</url>
 
     <dependencyManagement>
         <dependencies>
@@ -58,17 +61,26 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <properties>
+                        <property>
+                            <name>surefire.testng.verbose</name>
+                            <value>${testng.verbose}</value>
+                        </property>
+                    </properties>
                 </configuration>
             </plugin>
         </plugins>

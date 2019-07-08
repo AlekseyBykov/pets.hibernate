@@ -4,6 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author  aleksey.n.bykov@gmail.com
+ * @version 1.0
+ * @since   2019-07-05
+ */
 @Entity
 @Table(name = "STUDENT")
 @Data

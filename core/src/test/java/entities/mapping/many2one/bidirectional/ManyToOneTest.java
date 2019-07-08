@@ -10,7 +10,11 @@ import java.util.stream.Collectors;
 
 import static org.testng.Assert.*;
 
-
+/**
+ * @author  aleksey.n.bykov@gmail.com
+ * @version 1.0
+ * @since   2019-06-05
+ */
 public class ManyToOneTest {
 
     @Test(priority = 0)

@@ -9,6 +9,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import static org.testng.Assert.assertNotNull;
 
 
+/**
+ * @author  aleksey.n.bykov@gmail.com
+ * @version 1.0
+ * @since   2019-06-05
+ */
 public class OneToOneTest {
 
     @Test(priority = 0)
