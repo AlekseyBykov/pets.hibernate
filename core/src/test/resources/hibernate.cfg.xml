@@ -14,17 +14,17 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">create-drop</property>
 
-        <mapping class="entities.core.SecondEntity"/>
-        <mapping class="entities.core.FirstEntity"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.core.SecondEntity"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.core.FirstEntity"/>
 
-        <mapping class="entities.mapping.many2one.unidirectional.Department"/>
-        <mapping class="entities.mapping.many2one.unidirectional.Employee"/>
-        <mapping class="entities.mapping.many2one.bidirectional.University"/>
-        <mapping class="entities.mapping.many2one.bidirectional.Student"/>
-        <mapping class="entities.mapping.one2one.fkassoc.unidirectional.Person"/>
-        <mapping class="entities.mapping.one2one.fkassoc.unidirectional.Passport"/>
-        <mapping class="entities.mapping.one2one.fkassoc.bidirectional.Book"/>
-        <mapping class="entities.mapping.one2one.fkassoc.bidirectional.Publisher"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectional.Department"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectional.Employee"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional.University"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional.Student"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional.Person"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional.Passport"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional.Book"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional.Publisher"/>
 
     </session-factory>
 
