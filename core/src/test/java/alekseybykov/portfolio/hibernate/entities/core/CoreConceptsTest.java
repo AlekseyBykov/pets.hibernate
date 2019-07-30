@@ -1,6 +1,7 @@
 package alekseybykov.portfolio.hibernate.entities.core;
 
 import common.utils.SessionUtil;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.*;
 import org.hibernate.id.IdentifierGenerationException;
 import org.hibernate.query.Query;
@@ -27,7 +28,7 @@ public class CoreConceptsTest {
             assertEquals(firstEntity.getName(), "First entity");
 
             SecondEntity secondEntity = new SecondEntity();
-            secondEntity.setId(1L);
+            secondEntity.setId(NumberUtils.LONG_ONE);
             secondEntity.setName("Second entity");
 
             session.save(secondEntity);
@@ -45,21 +46,21 @@ public class CoreConceptsTest {
         SecondEntity entity0;
 
         try(Session session = SessionUtil.getSession()) {
-            entity0 = session.load(SecondEntity.class, 1L);
+            entity0 = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             id = entity0.getId();
 
-            assertEquals(id, Long.valueOf(1L));
+            assertEquals(id, NumberUtils.LONG_ONE);
             assertEquals(entity0.getName(), "Second entity");
         }
 
         try(Session session = SessionUtil.getSession()) {
             SecondEntity entity1 = session.load(SecondEntity.class, id);
             assertEquals(entity1.getName(), "Second entity");
-            assertEquals(entity1.getId(), Long.valueOf(1L));
+            assertEquals(entity1.getId(), NumberUtils.LONG_ONE);
 
             SecondEntity entity2 = session.load(SecondEntity.class, id);
             assertEquals(entity2.getName(), "Second entity");
-            assertEquals(entity2.getId(), Long.valueOf(1L));
+            assertEquals(entity2.getId(), NumberUtils.LONG_ONE);
 
             assertEquals(entity1, entity2);
             assertTrue(entity2 == entity1);
@@ -104,7 +105,7 @@ public class CoreConceptsTest {
     @Test(priority = 2)
     public void testSaveOrUpdateEntity() {
         try(Session session = SessionUtil.getSession()) {
-            SecondEntity entity = session.load(SecondEntity.class, 1L);
+            SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             Transaction tx = session.beginTransaction();
 
             entity.setName("Updated entity");
@@ -112,7 +113,7 @@ public class CoreConceptsTest {
             session.saveOrUpdate(entity);
             tx.commit();
 
-            assertEquals(entity.getId(), Long.valueOf(1L));
+            assertEquals(entity.getId(), NumberUtils.LONG_ONE);
             assertEquals(entity.getName(), "Updated entity");
         }
     }
@@ -192,7 +193,7 @@ public class CoreConceptsTest {
     @Test(priority = 5)
     public void testMergeEntity() {
         try(Session session = SessionUtil.getSession()) {
-            SecondEntity entity = session.load(SecondEntity.class, 1L);
+            SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             entity.setName("Merged to the database entity");
 
             Transaction tx = session.beginTransaction();
@@ -201,10 +202,10 @@ public class CoreConceptsTest {
 
             tx.commit();
 
-            entity = session.load(SecondEntity.class, 1L);
+            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
 
             assertEquals(entity.getName(), "Merged to the database entity");
-            assertEquals(entity.getId(), Long.valueOf(1L));
+            assertEquals(entity.getId(), NumberUtils.LONG_ONE);
         }
     }
 
@@ -215,14 +216,14 @@ public class CoreConceptsTest {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            entity = session.load(SecondEntity.class, 1L);
+            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             entity.setName("Modified entity");
 
             tx.commit();
         }
 
         assertEquals(entity.getName(), "Modified entity");
-        assertEquals(entity.getId(), Long.valueOf(1L));
+        assertEquals(entity.getId(), NumberUtils.LONG_ONE);
     }
 
     @Test(priority = 7)
@@ -230,19 +231,19 @@ public class CoreConceptsTest {
         SecondEntity refreshedEntity;
 
         try(Session session = SessionUtil.getSession()) {
-            refreshedEntity = session.load(SecondEntity.class, 1L);
+            refreshedEntity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             refreshedEntity.setName("out of synch");
         }
 
         assertEquals(refreshedEntity.getName(), "out of synch");
-        assertEquals(refreshedEntity.getId(), Long.valueOf(1L));
+        assertEquals(refreshedEntity.getId(), NumberUtils.LONG_ONE);
 
         try(Session session = SessionUtil.getSession()) {
             session.refresh(refreshedEntity);
         }
 
         assertEquals(refreshedEntity.getName(), "Modified entity");
-        assertEquals(refreshedEntity.getId(), Long.valueOf(1L));
+        assertEquals(refreshedEntity.getId(), NumberUtils.LONG_ONE);
     }
 
     @Test(priority = 8)
@@ -250,7 +251,7 @@ public class CoreConceptsTest {
         SecondEntity entity;
 
         try(Session session = SessionUtil.getSession()) {
-            entity = session.load(SecondEntity.class, 1L);
+            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
 
             assertFalse(session.isDirty());
 
@@ -265,7 +266,7 @@ public class CoreConceptsTest {
         SecondEntity entity;
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
-            entity = session.load(SecondEntity.class, 1L);
+            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
 
             session.delete(entity);
 
@@ -275,7 +276,7 @@ public class CoreConceptsTest {
         assertNotNull(entity);
 
         try(Session session = SessionUtil.getSession()) {
-            entity = session.get(SecondEntity.class, 1L);
+            entity = session.get(SecondEntity.class, NumberUtils.LONG_ONE);
         }
 
         assertNull(entity);
@@ -319,12 +320,12 @@ public class CoreConceptsTest {
             Query<FirstEntity> queryForFirstEntities = session.createQuery("from FirstEntity", FirstEntity.class);
             List<FirstEntity> listOfFirstEntities = queryForFirstEntities.list();
 
-            assertTrue(listOfFirstEntities.size() == 0);
+            assertTrue(listOfFirstEntities.size() == NumberUtils.INTEGER_ZERO);
 
             Query<SecondEntity> queryForSecondEntities = session.createQuery("from SecondEntity", SecondEntity.class);
             List<SecondEntity> listOfSecondEntities = queryForSecondEntities.list();
 
-            assertTrue(listOfSecondEntities.size() == 0);
+            assertTrue(listOfSecondEntities.size() == NumberUtils.INTEGER_ZERO);
         }
     }
 }

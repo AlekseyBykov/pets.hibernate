@@ -1,6 +1,7 @@
 package alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional;
 
 import common.utils.SessionUtil;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.*;
 import org.testng.annotations.Test;
 
@@ -81,7 +82,7 @@ public class ManyToOneTest {
                     .map(Student::getUniversity)
                     .collect(Collectors.toSet());
 
-            assertTrue(universities.size() == 1);
+            assertTrue(universities.size() == NumberUtils.INTEGER_ONE);
         }
     }
 }

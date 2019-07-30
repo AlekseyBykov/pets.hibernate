@@ -2,6 +2,7 @@ package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidir
 
 import common.utils.SessionUtil;
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.*;
 import org.hibernate.query.Query;
 import org.testng.annotations.Test;
@@ -42,7 +43,7 @@ public class OneToOneTest {
 
             List<Person> listOfPersons = queryForPersons.list();
 
-            assertTrue(listOfPersons.size() == 1);
+            assertTrue(listOfPersons.size() == NumberUtils.INTEGER_ONE);
         }
     }
 
@@ -53,7 +54,7 @@ public class OneToOneTest {
             criteriaQuery.from(Person.class);
 
             List<Person> persons = session.createQuery(criteriaQuery).getResultList();
-            assertTrue(persons.size() == 1);
+            assertTrue(persons.size() == NumberUtils.INTEGER_ONE);
         }
     }
 }
