@@ -2,11 +2,13 @@ package alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectiona
 
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertTrue;

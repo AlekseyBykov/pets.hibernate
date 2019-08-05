@@ -3,7 +3,8 @@ package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidir
 import common.utils.SessionUtil;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.testng.annotations.Test;
 

@@ -2,14 +2,18 @@ package alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional
 
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.testng.annotations.Test;
 
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author  aleksey.n.bykov@gmail.com

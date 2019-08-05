@@ -1,7 +1,8 @@
 package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional;
 
 import common.utils.SessionUtil;
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.testng.annotations.Test;
 
 import javax.persistence.criteria.CriteriaQuery;

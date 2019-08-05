@@ -2,10 +2,14 @@ package alekseybykov.portfolio.hibernate.entities.core;
 
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.*;
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.id.IdentifierGenerationException;
 import org.hibernate.query.Query;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 import java.util.List;
 
