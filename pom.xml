@@ -19,8 +19,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <hibernate-core.version>5.2.17.Final</hibernate-core.version>
-        <sqlserver.version>6.1.0.jre8</sqlserver.version>
         <testng.version>6.8</testng.version>
+        <postgresql.driver.version>42.2.4</postgresql.driver.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
         <compiler.plugin.version>3.8.1</compiler.plugin.version>
         <surefire.version>2.21.0</surefire.version>
         <testng.verbose>0</testng.verbose>
@@ -39,9 +40,15 @@
                 <version>${hibernate-core.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.sqlserver</groupId>
-                <artifactId>mssql-jdbc</artifactId>
-                <version>${sqlserver.version}</version>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.driver.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.testng</groupId>

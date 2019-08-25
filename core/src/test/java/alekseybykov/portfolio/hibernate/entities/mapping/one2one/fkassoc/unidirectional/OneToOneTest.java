@@ -1,7 +1,7 @@
 package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional;
 
 import common.utils.SessionUtil;
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
