@@ -1,3 +1,6 @@
+//
+// Feel free to use these solutions in your work.
+//
 package common.utils;
 
 import org.hibernate.Session;

@@ -1,3 +1,6 @@
+//
+// Feel free to use these solutions in your work.
+//
 package alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional;
 
 import common.utils.SessionUtil;

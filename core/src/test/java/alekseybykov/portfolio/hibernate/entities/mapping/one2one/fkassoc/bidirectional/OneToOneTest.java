@@ -1,3 +1,6 @@
+//
+// Feel free to use these solutions in your work.
+//
 package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional;
 
 import common.utils.SessionUtil;
