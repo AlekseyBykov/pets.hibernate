@@ -18,7 +18,11 @@ import java.util.List;
 
 import static org.testng.Assert.*;
 
-
+/**
+ * @author  aleksey.n.bykov@gmail.com
+ * @version 1.0
+ * @since   2019-06-09
+ */
 public class CoreConceptsTest {
 
     @BeforeSuite

@@ -9,9 +9,6 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.type.StandardBasicTypes;
 
 /**
- * Registering with some customization of SQL function
- * before using it in JPQL or Criteria API.
- *
  * @author  aleksey.n.bykov@gmail.com
  * @version 1.0
  * @since   2019-09-02
