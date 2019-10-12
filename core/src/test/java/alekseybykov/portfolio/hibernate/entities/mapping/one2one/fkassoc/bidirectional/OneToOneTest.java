@@ -3,6 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional;
 
+import alekseybykov.portfolio.hibernate.entities.TestBase;
 import common.utils.SessionUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-05
  */
-class OneToOneTest {
+class OneToOneTest extends TestBase {
 
     @Test
     void testSaveOneToOneBidirectionalRelationship() {
@@ -35,33 +36,29 @@ class OneToOneTest {
 
             tx.commit();
         }
-    }
 
-    @Test
-    void readChildRecordThroughParent() {
+        // reading child record through parent
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Publisher> criteriaQuery = session.getCriteriaBuilder().createQuery(Publisher.class);
             criteriaQuery.from(Publisher.class);
 
-            Publisher publisher = session.createQuery(criteriaQuery).uniqueResult();
-            assertNotNull(publisher);
+            Publisher loadedPublisher = session.createQuery(criteriaQuery).uniqueResult();
+            assertNotNull(loadedPublisher);
 
-            Book book = publisher.getBook();
-            assertNotNull(book);
+            Book loadedBook = loadedPublisher.getBook();
+            assertNotNull(loadedBook);
         }
-    }
 
-    @Test
-    void readParentRecordThroughChild() {
+        // read parent record through child
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Book> criteriaQuery = session.getCriteriaBuilder().createQuery(Book.class);
             criteriaQuery.from(Book.class);
 
-            Book book = session.createQuery(criteriaQuery).uniqueResult();
-            assertNotNull(book);
+            Book loadedBook = session.createQuery(criteriaQuery).uniqueResult();
+            assertNotNull(loadedBook);
 
-            Publisher publisher = book.getPublisher();
-            assertNotNull(publisher);
+            Publisher loadedPublisher = loadedBook.getPublisher();
+            assertNotNull(loadedPublisher);
         }
     }
 }

@@ -5,16 +5,12 @@ package alekseybykov.portfolio.hibernate.entities.core;
 
 import alekseybykov.portfolio.hibernate.entities.TestBase;
 import common.utils.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.id.IdentifierGenerationException;
-import org.hibernate.query.Query;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +23,7 @@ class CoreConceptsTest extends TestBase {
 
     @Test
     void saveEntities() {
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             FirstEntity firstEntity = new FirstEntity();
@@ -52,41 +48,11 @@ class CoreConceptsTest extends TestBase {
     }
 
     @Test
-    void testForIdentityAndEquality() {
-        Long id;
-        SecondEntity entity0;
-
-        try(Session session = SessionUtil.getSession()) {
-            entity0 = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
-            id = entity0.getId();
-
-            assertEquals(id, NumberUtils.LONG_ONE);
-            assertEquals(entity0.getName(), "Second entity");
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            SecondEntity entity1 = session.load(SecondEntity.class, id);
-            assertEquals(entity1.getName(), "Second entity");
-            assertEquals(entity1.getId(), NumberUtils.LONG_ONE);
-
-            SecondEntity entity2 = session.load(SecondEntity.class, id);
-            assertEquals(entity2.getName(), "Second entity");
-            assertEquals(entity2.getId(), NumberUtils.LONG_ONE);
-
-            assertEquals(entity1, entity2);
-            assertTrue(entity2 == entity1);
-
-            assertEquals(entity0, entity1);
-            assertFalse(entity0 == entity1);
-        }
-    }
-
-    @Test
     void testDoubleSaveEntity() {
         Long id;
         FirstEntity entity;
 
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             entity = new FirstEntity();
@@ -100,7 +66,7 @@ class CoreConceptsTest extends TestBase {
             tx.commit();
         }
 
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             entity.setName("Fourth entity");
@@ -115,7 +81,19 @@ class CoreConceptsTest extends TestBase {
 
     @Test
     void testSaveOrUpdateEntity() {
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            SecondEntity secondEntity = new SecondEntity();
+            secondEntity.setId(NumberUtils.LONG_ONE);
+            secondEntity.setName(StringUtils.EMPTY);
+
+            session.save(secondEntity);
+
+            tx.commit();
+        }
+
+        try (Session session = SessionUtil.getSession()) {
             SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             Transaction tx = session.beginTransaction();
 
@@ -130,21 +108,8 @@ class CoreConceptsTest extends TestBase {
     }
 
     @Test
-    void testLoadMissingEntity() {
-        try(Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            FirstEntity missingEntity = session.load(FirstEntity.class, 100L);
-            assertNull(missingEntity);
-
-            assertThrows(ObjectNotFoundException.class,
-                () -> tx.commit(), "key out of range");
-        }
-    }
-
-    @Test
     void testGetMissingEntity() {
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             FirstEntity missingEntity = session.get(FirstEntity.class, 100L);
@@ -156,7 +121,7 @@ class CoreConceptsTest extends TestBase {
 
     @Test
     void firstTestSaveEntityWithoutExplicitlyAssignedId() {
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             FirstEntity entity = new FirstEntity();
@@ -172,23 +137,18 @@ class CoreConceptsTest extends TestBase {
 
     @Test
     void secondTestSaveEntityWithoutExplicitlyAssignedId() {
-        try(Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
+        try (Session session = SessionUtil.getSession()) {
             SecondEntity entity = new SecondEntity();
             entity.setName("Another second entity");
 
-            session.save(entity);
-            assertNull(entity.getId());
-
             assertThrows(IdentifierGenerationException.class,
-                    () -> tx.commit(), "key out of range");
+                    () -> session.save(entity));
         }
     }
 
     @Test
     void thirdTestSaveEntityWithExplicitlyAssignedId() {
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             SecondEntity entity = new SecondEntity();
@@ -205,7 +165,7 @@ class CoreConceptsTest extends TestBase {
 
     @Test
     void testMergeEntity() {
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             entity.setName("Merged to the database entity");
 
@@ -225,8 +185,7 @@ class CoreConceptsTest extends TestBase {
     @Test
     void testSaveChangesOnPersistentState() {
         SecondEntity entity;
-
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
@@ -242,8 +201,7 @@ class CoreConceptsTest extends TestBase {
     @Test
     void testRefreshEntity() {
         SecondEntity refreshedEntity;
-
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             refreshedEntity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             refreshedEntity.setName("out of synch");
         }
@@ -251,19 +209,18 @@ class CoreConceptsTest extends TestBase {
         assertEquals(refreshedEntity.getName(), "out of synch");
         assertEquals(refreshedEntity.getId(), NumberUtils.LONG_ONE);
 
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             session.refresh(refreshedEntity);
         }
 
-        assertEquals(refreshedEntity.getName(), "Modified entity");
+        assertNotEquals(refreshedEntity.getName(), "out of synch");
         assertEquals(refreshedEntity.getId(), NumberUtils.LONG_ONE);
     }
 
     @Test
     void testDirtySession() {
         SecondEntity entity;
-
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
 
             assertFalse(session.isDirty());
@@ -277,7 +234,7 @@ class CoreConceptsTest extends TestBase {
     @Test
     void testDeletePersistentEntityWithLoadingToMemory() {
         SecondEntity entity;
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
             entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
 
@@ -288,7 +245,7 @@ class CoreConceptsTest extends TestBase {
 
         assertNotNull(entity);
 
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             entity = session.get(SecondEntity.class, NumberUtils.LONG_ONE);
         }
 
@@ -301,7 +258,7 @@ class CoreConceptsTest extends TestBase {
         entity.setId(2L);
         entity.setName("for removing");
 
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             session.delete(entity);
@@ -311,34 +268,10 @@ class CoreConceptsTest extends TestBase {
 
         assertNotNull(entity);
 
-        try(Session session = SessionUtil.getSession()) {
+        try (Session session = SessionUtil.getSession()) {
             entity = session.get(SecondEntity.class, 2L);
         }
 
         assertNull(entity);
-    }
-
-    @AfterAll
-    static void bulkDeleteWithoutLoadingToMemory() {
-        try(Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            session.createQuery("delete from FirstEntity").executeUpdate();
-            session.createQuery("delete from SecondEntity").executeUpdate();
-
-            tx.commit();
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            Query<FirstEntity> queryForFirstEntities = session.createQuery("from FirstEntity", FirstEntity.class);
-            List<FirstEntity> listOfFirstEntities = queryForFirstEntities.list();
-
-            assertTrue(listOfFirstEntities.size() == NumberUtils.INTEGER_ZERO);
-
-            Query<SecondEntity> queryForSecondEntities = session.createQuery("from SecondEntity", SecondEntity.class);
-            List<SecondEntity> listOfSecondEntities = queryForSecondEntities.list();
-
-            assertTrue(listOfSecondEntities.size() == NumberUtils.INTEGER_ZERO);
-        }
     }
 }

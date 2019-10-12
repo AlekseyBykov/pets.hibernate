@@ -3,6 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectional;
 
+import alekseybykov.portfolio.hibernate.entities.TestBase;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-05
  */
-class ManyToOneTest {
+class ManyToOneTest extends TestBase {
 
     @Test
     void testSaveManyToOneUnidirectionalRelationship() {

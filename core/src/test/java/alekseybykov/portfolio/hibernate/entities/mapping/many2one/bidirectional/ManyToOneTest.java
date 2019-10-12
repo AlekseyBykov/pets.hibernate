@@ -57,25 +57,21 @@ class ManyToOneTest extends TestBase {
 
             tx.commit();
         }
-    }
 
-    @Test
-    void readChildRecordsThroughParent() {
+        // reading child records through parent
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<University> criteriaQuery = session.getCriteriaBuilder().createQuery(University.class);
             criteriaQuery.from(University.class);
 
-            University university = session.createQuery(criteriaQuery).uniqueResult();
-            assertNotNull(university);
+            University loadedUniversity = session.createQuery(criteriaQuery).uniqueResult();
+            assertNotNull(loadedUniversity);
 
-            List<Student> students = university.getStudents();
+            List<Student> students = loadedUniversity.getStudents();
             assertNotNull(students);
             assertTrue(students.size() == 3);
         }
-    }
 
-    @Test
-    void testReadParentRecordThroughChilds() {
+        // read parent record through childs
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Student> criteriaQuery = session.getCriteriaBuilder().createQuery(Student.class);
             criteriaQuery.from(Student.class);

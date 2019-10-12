@@ -3,6 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional;
 
+import alekseybykov.portfolio.hibernate.entities.TestBase;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-05
  */
-class OneToOneTest {
+class OneToOneTest extends TestBase {
 
     @Test
     void testSaveOneToOneUnidirectionalRelationship() {
@@ -49,10 +50,8 @@ class OneToOneTest {
 
             assertTrue(listOfPersons.size() == NumberUtils.INTEGER_ONE);
         }
-    }
 
-    @Test
-    void readByUsingCriteria() {
+        // reading by using Criteria API
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Person> criteriaQuery = session.getCriteriaBuilder().createQuery(Person.class);
             criteriaQuery.from(Person.class);
