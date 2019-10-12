@@ -319,7 +319,7 @@ class CoreConceptsTest extends TestBase {
     }
 
     @AfterAll
-    void bulkDeleteWithoutLoadingToMemory() {
+    static void bulkDeleteWithoutLoadingToMemory() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
