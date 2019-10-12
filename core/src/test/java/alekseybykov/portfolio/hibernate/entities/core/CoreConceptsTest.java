@@ -3,6 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities.core;
 
+import alekseybykov.portfolio.hibernate.entities.TestBase;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.ObjectNotFoundException;
@@ -10,23 +11,22 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.id.IdentifierGenerationException;
 import org.hibernate.query.Query;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
- * @since   2019-06-09
+ * @version 2019-06-09
  */
-public class CoreConceptsTest {
+class CoreConceptsTest extends TestBase {
 
-    @BeforeSuite
-    public void saveEntities() {
+    @Test
+    void saveEntities() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -51,8 +51,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority = 0)
-    public void testForIdentityAndEquality() {
+    @Test
+    void testForIdentityAndEquality() {
         Long id;
         SecondEntity entity0;
 
@@ -81,8 +81,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority = 1)
-    public void testDoubleSaveEntity() {
+    @Test
+    void testDoubleSaveEntity() {
         Long id;
         FirstEntity entity;
 
@@ -113,8 +113,8 @@ public class CoreConceptsTest {
         assertEquals(entity.getName(), "Fourth entity");
     }
 
-    @Test(priority = 2)
-    public void testSaveOrUpdateEntity() {
+    @Test
+    void testSaveOrUpdateEntity() {
         try(Session session = SessionUtil.getSession()) {
             SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             Transaction tx = session.beginTransaction();
@@ -129,20 +129,21 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(expectedExceptions = ObjectNotFoundException.class)
-    public void testLoadMissingEntity() {
+    @Test
+    void testLoadMissingEntity() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             FirstEntity missingEntity = session.load(FirstEntity.class, 100L);
             assertNull(missingEntity);
 
-            tx.commit();
+            assertThrows(ObjectNotFoundException.class,
+                () -> tx.commit(), "key out of range");
         }
     }
 
     @Test
-    public void testGetMissingEntity() {
+    void testGetMissingEntity() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -153,8 +154,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority = 3)
-    public void firstTestSaveEntityWithoutExplicitlyAssignedId() {
+    @Test
+    void firstTestSaveEntityWithoutExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -169,8 +170,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(expectedExceptions = IdentifierGenerationException.class)
-    public void secondTestSaveEntityWithoutExplicitlyAssignedId() {
+    @Test
+    void secondTestSaveEntityWithoutExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -180,12 +181,13 @@ public class CoreConceptsTest {
             session.save(entity);
             assertNull(entity.getId());
 
-            tx.commit();
+            assertThrows(IdentifierGenerationException.class,
+                    () -> tx.commit(), "key out of range");
         }
     }
 
-    @Test(priority = 4)
-    public void thirdTestSaveEntityWithExplicitlyAssignedId() {
+    @Test
+    void thirdTestSaveEntityWithExplicitlyAssignedId() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -201,8 +203,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority = 5)
-    public void testMergeEntity() {
+    @Test
+    void testMergeEntity() {
         try(Session session = SessionUtil.getSession()) {
             SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
             entity.setName("Merged to the database entity");
@@ -220,8 +222,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority = 6)
-    public void testSaveChangesOnPersistentState() {
+    @Test
+    void testSaveChangesOnPersistentState() {
         SecondEntity entity;
 
         try(Session session = SessionUtil.getSession()) {
@@ -237,8 +239,8 @@ public class CoreConceptsTest {
         assertEquals(entity.getId(), NumberUtils.LONG_ONE);
     }
 
-    @Test(priority = 7)
-    public void testRefreshEntity() {
+    @Test
+    void testRefreshEntity() {
         SecondEntity refreshedEntity;
 
         try(Session session = SessionUtil.getSession()) {
@@ -257,8 +259,8 @@ public class CoreConceptsTest {
         assertEquals(refreshedEntity.getId(), NumberUtils.LONG_ONE);
     }
 
-    @Test(priority = 8)
-    public void testDirtySession() {
+    @Test
+    void testDirtySession() {
         SecondEntity entity;
 
         try(Session session = SessionUtil.getSession()) {
@@ -272,8 +274,8 @@ public class CoreConceptsTest {
         }
     }
 
-    @Test(priority = 9)
-    public void testDeletePersistentEntityWithLoadingToMemory() {
+    @Test
+    void testDeletePersistentEntityWithLoadingToMemory() {
         SecondEntity entity;
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
@@ -293,8 +295,8 @@ public class CoreConceptsTest {
         assertNull(entity);
     }
 
-    @Test(priority = 10)
-    public void testDeleteThroughTransientObjectWithLoadingToMemory() {
+    @Test
+    void testDeleteThroughTransientObjectWithLoadingToMemory() {
         SecondEntity entity = new SecondEntity();
         entity.setId(2L);
         entity.setName("for removing");
@@ -316,8 +318,8 @@ public class CoreConceptsTest {
         assertNull(entity);
     }
 
-    @AfterSuite
-    public void bulkDeleteWithoutLoadingToMemory() {
+    @AfterAll
+    void bulkDeleteWithoutLoadingToMemory() {
         try(Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 

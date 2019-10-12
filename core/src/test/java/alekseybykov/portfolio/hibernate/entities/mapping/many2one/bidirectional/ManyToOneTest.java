@@ -3,11 +3,12 @@
 //
 package alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional;
 
+import alekseybykov.portfolio.hibernate.entities.TestBase;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
@@ -15,18 +16,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
- * @since   2019-06-05
+ * @version 2019-06-05
  */
-public class ManyToOneTest {
+class ManyToOneTest extends TestBase {
 
-    @Test(priority = 0)
-    public void testSaveManyToOneBidirectionalRelationship() {
+    @Test
+    void testSaveManyToOneBidirectionalRelationship() {
         University university = new University();
         university.setName("University");
 
@@ -59,8 +59,8 @@ public class ManyToOneTest {
         }
     }
 
-    @Test(priority = 1)
-    public void readChildRecordsThroughParent() {
+    @Test
+    void readChildRecordsThroughParent() {
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<University> criteriaQuery = session.getCriteriaBuilder().createQuery(University.class);
             criteriaQuery.from(University.class);
@@ -74,8 +74,8 @@ public class ManyToOneTest {
         }
     }
 
-    @Test(priority = 2)
-    public void readParentRecordThroughChilds() {
+    @Test
+    void testReadParentRecordThroughChilds() {
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Student> criteriaQuery = session.getCriteriaBuilder().createQuery(Student.class);
             criteriaQuery.from(Student.class);

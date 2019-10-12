@@ -9,8 +9,7 @@ import javax.persistence.*;
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
- * @since   2019-06-06
+ * @version 2019-06-06
  */
 @Entity
 @Data

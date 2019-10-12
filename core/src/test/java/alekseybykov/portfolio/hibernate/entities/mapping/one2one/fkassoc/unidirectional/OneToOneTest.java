@@ -9,22 +9,22 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
- * @since   2019-06-05
+ * @version 2019-06-05
  */
-public class OneToOneTest {
+class OneToOneTest {
 
-    @Test(priority = 0)
-    public void testSaveOneToOneUnidirectionalRelationship() {
+    @Test
+    void testSaveOneToOneUnidirectionalRelationship() {
         Passport passport = new Passport();
         passport.setPassportNo("1111");
 
@@ -51,8 +51,8 @@ public class OneToOneTest {
         }
     }
 
-    @Test(priority = 1)
-    public void readByUsingCriteria() {
+    @Test
+    void readByUsingCriteria() {
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Person> criteriaQuery = session.getCriteriaBuilder().createQuery(Person.class);
             criteriaQuery.from(Person.class);

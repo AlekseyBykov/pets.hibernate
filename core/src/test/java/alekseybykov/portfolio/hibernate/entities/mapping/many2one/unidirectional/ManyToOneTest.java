@@ -8,23 +8,23 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
- * @since   2019-06-05
+ * @version 2019-06-05
  */
-public class ManyToOneTest {
+class ManyToOneTest {
 
     @Test
-    public void testSaveManyToOneUnidirectionalRelationship() {
+    void testSaveManyToOneUnidirectionalRelationship() {
 
         Department department = new Department();
         department.setDeptName("Database development department");

@@ -7,8 +7,8 @@
 
     <groupId>alekseybykov.portfolio</groupId>
     <artifactId>hibernate</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0</version>
+    <packaging>pom</packaging>
+    <version>2.0</version>
 
     <modules>
         <module>core</module>
@@ -19,18 +19,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <hibernate-core.version>5.3.7.Final</hibernate-core.version>
-        <testng.version>6.8</testng.version>
+        <flyway.version>5.2.4</flyway.version>
         <postgresql.driver.version>42.2.4</postgresql.driver.version>
+        <junit.jupiter.version>5.3.2</junit.jupiter.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <compiler.plugin.version>3.8.1</compiler.plugin.version>
-        <surefire.version>2.21.0</surefire.version>
-        <testng.verbose>0</testng.verbose>
+        <surefire.version>2.22.0</surefire.version>
         <lombok.version>1.18.0</lombok.version>
     </properties>
 
     <name>hibernate</name>
     <description>Test suite for various Hibernate concepts.</description>
     <url>https://alekseybykov.github.io</url>
+
+    <developers>
+        <developer>
+            <name>Aleksey Bykov</name>
+            <email>aleksey.n.bykov@gmail.com</email>
+        </developer>
+    </developers>
+
+    <inceptionYear>2019</inceptionYear>
 
     <dependencyManagement>
         <dependencies>
@@ -46,14 +55,25 @@
                 <scope>runtime</scope>
             </dependency>
             <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>${testng.version}</version>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -73,6 +93,13 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                 </configuration>
@@ -81,14 +108,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.version}</version>
-                <configuration>
-                    <properties>
-                        <property>
-                            <name>surefire.testng.verbose</name>
-                            <value>${testng.verbose}</value>
-                        </property>
-                    </properties>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -6,21 +6,21 @@ package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidire
 import common.utils.SessionUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.criteria.CriteriaQuery;
 
-import static org.testng.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
- * @since   2019-06-05
+ * @version 2019-06-05
  */
-public class OneToOneTest {
+class OneToOneTest {
 
-    @Test(priority = 0)
-    public void testSaveOneToOneBidirectionalRelationship() {
+    @Test
+    void testSaveOneToOneBidirectionalRelationship() {
         Book book = new Book();
         book.setTitle("Some book");
 
@@ -37,8 +37,8 @@ public class OneToOneTest {
         }
     }
 
-    @Test(priority = 1)
-    public void readChildRecordThroughParent() {
+    @Test
+    void readChildRecordThroughParent() {
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Publisher> criteriaQuery = session.getCriteriaBuilder().createQuery(Publisher.class);
             criteriaQuery.from(Publisher.class);
@@ -51,8 +51,8 @@ public class OneToOneTest {
         }
     }
 
-    @Test(priority = 2)
-    public void readParentRecordThroughChild() {
+    @Test
+    void readParentRecordThroughChild() {
         try(Session session = SessionUtil.getSession()) {
             CriteriaQuery<Book> criteriaQuery = session.getCriteriaBuilder().createQuery(Book.class);
             criteriaQuery.from(Book.class);
