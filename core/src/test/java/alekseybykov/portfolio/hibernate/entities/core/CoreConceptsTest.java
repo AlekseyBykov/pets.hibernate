@@ -274,4 +274,49 @@ class CoreConceptsTest extends TestBase {
 
         assertNull(entity);
     }
+
+    @Test
+    void testForIdentityAndEquality() {
+        Long id;
+        SecondEntity entity0;
+
+        try (Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            SecondEntity secondEntity = new SecondEntity();
+            secondEntity.setId(NumberUtils.LONG_MINUS_ONE);
+            secondEntity.setName("Second entity");
+
+            session.save(secondEntity);
+
+            assertNotNull(secondEntity.getId());
+            assertEquals(secondEntity.getName(), "Second entity");
+
+            tx.commit();
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            entity0 = session.load(SecondEntity.class, NumberUtils.LONG_MINUS_ONE);
+            id = entity0.getId();
+
+            assertEquals(id, NumberUtils.LONG_MINUS_ONE);
+            assertEquals(entity0.getName(), "Second entity");
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            SecondEntity entity1 = session.load(SecondEntity.class, id);
+            assertEquals(entity1.getName(), "Second entity");
+            assertEquals(entity1.getId(), NumberUtils.LONG_MINUS_ONE);
+
+            SecondEntity entity2 = session.load(SecondEntity.class, id);
+            assertEquals(entity2.getName(), "Second entity");
+            assertEquals(entity2.getId(), NumberUtils.LONG_MINUS_ONE);
+
+            assertEquals(entity1, entity2);
+            assertTrue(entity2 == entity1);
+
+            assertEquals(entity0, entity1);
+            assertFalse(entity0 == entity1);
+        }
+    }
 }
