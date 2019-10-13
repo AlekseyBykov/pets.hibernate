@@ -3,7 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional;
 
-import alekseybykov.portfolio.hibernate.entities.TestBase;
+import alekseybykov.portfolio.hibernate.TestContextHook;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
@@ -27,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-05
  */
-class OneToOneTest extends TestBase {
+@ExtendWith({TestContextHook.class})
+class OneToOneTest {
 
     @Test
     void testSaveOneToOneUnidirectionalRelationship() {

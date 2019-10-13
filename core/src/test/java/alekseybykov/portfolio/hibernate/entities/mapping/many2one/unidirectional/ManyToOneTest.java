@@ -3,13 +3,14 @@
 //
 package alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectional;
 
-import alekseybykov.portfolio.hibernate.entities.TestBase;
+import alekseybykov.portfolio.hibernate.TestContextHook;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-05
  */
-class ManyToOneTest extends TestBase {
+@ExtendWith({TestContextHook.class})
+class ManyToOneTest {
 
     @Test
     void testSaveManyToOneUnidirectionalRelationship() {

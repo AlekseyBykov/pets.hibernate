@@ -1,43 +1,49 @@
-//
-// Feel free to use these solutions in your work.
-//
-package alekseybykov.portfolio.hibernate.entities;
+package alekseybykov.portfolio.hibernate;
 
 import alekseybykov.portfolio.hibernate.configuration.FlywayProperties;
 import common.utils.SessionUtil;
 import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+
+import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 2019-10-12
+ * @version 2019-10-13
  */
-public class TestBase {
+public class TestContextHook implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
 
     private static final FlywayProperties properties = FlywayProperties.getInstance();
 
-    @BeforeAll
-    public static void setup() {
-        Flyway flyway = Flyway.configure()
-                .dataSource(properties.getProperty("dataSourceUrl"),
+    private static boolean started = false;
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        if (!started) {
+            started = true;
+            Flyway flyway = Flyway.configure()
+                    .dataSource(properties.getProperty("dataSourceUrl"),
                             properties.getProperty("user"),
                             properties.getProperty("password"))
-                .schemas(properties.getProperty("scheme"))
-                .locations(properties.getProperty("location"))
-                .baselineOnMigrate(Boolean.valueOf(properties.getProperty("baselineOnMigrate")))
-                .outOfOrder(Boolean.valueOf(properties.getProperty("outOfOrder")))
-                .load();
+                    .schemas(properties.getProperty("scheme"))
+                    .locations(properties.getProperty("location"))
+                    .baselineOnMigrate(Boolean.valueOf(properties.getProperty("baselineOnMigrate")))
+                    .outOfOrder(Boolean.valueOf(properties.getProperty("outOfOrder")))
+                    .load();
 
-        flyway.clean();
-        flyway.repair();
-        flyway.migrate();
+            flyway.clean();
+            flyway.repair();
+            flyway.migrate();
+
+            context.getRoot().getStore(GLOBAL).put("TestContextHook", this);
+        }
     }
 
-    @AfterAll
-    static void bulkDeleteWithoutLoadingToMemory() {
+    @Override
+    public void close() {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 

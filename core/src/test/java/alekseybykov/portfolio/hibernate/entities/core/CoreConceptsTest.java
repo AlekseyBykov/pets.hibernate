@@ -3,7 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities.core;
 
-import alekseybykov.portfolio.hibernate.entities.TestBase;
+import alekseybykov.portfolio.hibernate.TestContextHook;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.id.IdentifierGenerationException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-09
  */
-class CoreConceptsTest extends TestBase {
+@ExtendWith({TestContextHook.class})
+class CoreConceptsTest {
 
     @Test
     void saveEntities() {
