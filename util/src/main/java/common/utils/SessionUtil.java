@@ -36,4 +36,8 @@ public final class SessionUtil {
     public static Session getSession() {
         return getInstance().sessionFactory.openSession();
     }
+
+    public static Session getCurrentSession() {
+        return getInstance().sessionFactory.getCurrentSession();
+    }
 }

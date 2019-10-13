@@ -9,7 +9,9 @@
         <property name="connection.url">jdbc:postgresql://localhost:5432/hibernate</property>
         <property name="connection.username">postgres</property>
         <property name="connection.password">root</property>
+        <!-- For mapping types and generating syntactically correct SQL, depending on the database. -->
         <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+
         <property name="hibernate.default_schema">hibernate</property>
 
         <property name="show_sql">true</property>

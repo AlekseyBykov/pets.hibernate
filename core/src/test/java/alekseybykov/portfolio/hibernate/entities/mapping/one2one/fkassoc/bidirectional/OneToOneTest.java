@@ -13,8 +13,13 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 /**
+ * Any method on Session object fire off some event.
+ * For example, session.save() will be translated to SaveOrUpdateEvent.
+ * All the event is queued in ActionQueue.
+ * At the end of the unit of work this actions are performed
+ * in database (as DML).
+ *
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-05
  */
