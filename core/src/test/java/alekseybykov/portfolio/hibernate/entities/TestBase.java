@@ -3,7 +3,7 @@
 //
 package alekseybykov.portfolio.hibernate.entities;
 
-import alekseybykov.portfolio.hibernate.configuration.FlywayConfiguration;
+import alekseybykov.portfolio.hibernate.configuration.FlywayProperties;
 import common.utils.SessionUtil;
 import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
@@ -17,16 +17,18 @@ import org.junit.jupiter.api.BeforeAll;
  */
 public class TestBase {
 
+    private static final FlywayProperties properties = FlywayProperties.getInstance();
+
     @BeforeAll
     public static void setup() {
         Flyway flyway = Flyway.configure()
-                .dataSource(FlywayConfiguration.dataSourceUrl,
-                            FlywayConfiguration.user,
-                            FlywayConfiguration.password)
-                .schemas(FlywayConfiguration.scheme)
-                .locations(FlywayConfiguration.location)
-                .baselineOnMigrate(FlywayConfiguration.baselineOnMigrate)
-                .outOfOrder(FlywayConfiguration.outOfOrder)
+                .dataSource(properties.getProperty("dataSourceUrl"),
+                            properties.getProperty("user"),
+                            properties.getProperty("password"))
+                .schemas(properties.getProperty("scheme"))
+                .locations(properties.getProperty("location"))
+                .baselineOnMigrate(Boolean.valueOf(properties.getProperty("baselineOnMigrate")))
+                .outOfOrder(Boolean.valueOf(properties.getProperty("outOfOrder")))
                 .load();
 
         flyway.clean();
