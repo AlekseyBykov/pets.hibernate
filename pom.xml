@@ -48,6 +48,19 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate-core.version}</version>
             </dependency>
+
+            <!--
+            See also settings which affect to performance.
+
+            postgresql.conf:
+
+            - shared_buffers;
+            - huge_pages;
+            - work_mem;
+            - maintenance_work_mem;
+            ...
+
+            -->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
