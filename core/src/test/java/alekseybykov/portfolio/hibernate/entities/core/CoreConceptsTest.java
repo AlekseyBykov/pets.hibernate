@@ -7,9 +7,11 @@ import alekseybykov.portfolio.hibernate.TestContextHook;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.id.IdentifierGenerationException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -121,6 +123,24 @@ class CoreConceptsTest {
 
             FirstEntity missingEntity = session.get(FirstEntity.class, 100L);
             assertNull(missingEntity);
+
+            tx.commit();
+        }
+    }
+
+    @Test
+    @DisplayName("Load a non-existent entity by ID")
+    void testLoadMissingEntity() {
+        try (Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            FirstEntity missingEntity = session.load(FirstEntity.class, 100L);
+
+            ObjectNotFoundException thrown =
+                    assertThrows(ObjectNotFoundException.class,
+                            missingEntity::getName);
+
+            assertNotNull(thrown);
 
             tx.commit();
         }
