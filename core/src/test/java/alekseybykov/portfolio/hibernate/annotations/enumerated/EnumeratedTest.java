@@ -40,8 +40,6 @@ class EnumeratedTest {
         }
 
         try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
             Week week = session.load(Week.class, id);
 
             week.setDayInOrdinal(Day.FRIDAY);
@@ -49,8 +47,6 @@ class EnumeratedTest {
 
             assertEquals(Day.FRIDAY.name(), week.getDayInString().name());
             assertEquals(Day.FRIDAY.ordinal(), week.getDayInOrdinal().ordinal());
-
-            tx.commit();
         }
     }
 }
