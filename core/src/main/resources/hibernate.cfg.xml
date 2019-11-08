@@ -29,6 +29,8 @@
         <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional.Book"/>
         <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional.Publisher"/>
 
+        <mapping class="alekseybykov.portfolio.hibernate.annotations.enumerated.Week"/>
+
     </session-factory>
 
 </hibernate-configuration>
