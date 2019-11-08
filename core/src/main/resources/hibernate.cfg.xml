@@ -17,8 +17,8 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">validate</property>
 
-        <mapping class="alekseybykov.portfolio.hibernate.entities.SecondEntity"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.FirstEntity"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.ManuallyIdentifiedEntity"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.AutoIdentifiedEntity"/>
 
         <mapping class="alekseybykov.portfolio.hibernate.mapping.many2one.unidirectional.Department"/>
         <mapping class="alekseybykov.portfolio.hibernate.mapping.many2one.unidirectional.Employee"/>

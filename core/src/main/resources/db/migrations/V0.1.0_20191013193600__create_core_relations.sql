@@ -12,13 +12,13 @@ create table if not exists student (
     constraint university_id_fkey foreign key (university_id) references university (university_id)
 );
 
-create table if not exists secondentity (
+create table if not exists manuallyIdentifiedEntity (
     id bigint not null,
     name text,
     constraint secondentity_id_pkey primary key (id)
 );
 
-create table if not exists firstentity (
+create table if not exists autoIdentifiedEntity (
     id bigserial not null,
     name text,
     constraint firstentity_id_pkey primary key (id)

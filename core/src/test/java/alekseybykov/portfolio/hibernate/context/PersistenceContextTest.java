@@ -4,8 +4,8 @@
 package alekseybykov.portfolio.hibernate.context;
 
 import alekseybykov.portfolio.hibernate.TestContextHook;
-import alekseybykov.portfolio.hibernate.entities.FirstEntity;
-import alekseybykov.portfolio.hibernate.entities.SecondEntity;
+import alekseybykov.portfolio.hibernate.entities.AutoIdentifiedEntity;
+import alekseybykov.portfolio.hibernate.entities.ManuallyIdentifiedEntity;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -38,7 +38,7 @@ class PersistenceContextTest {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            FirstEntity firstEntity = new FirstEntity();
+            AutoIdentifiedEntity firstEntity = new AutoIdentifiedEntity();
             firstEntity.setName("First entity");
 
             session.save(firstEntity);
@@ -46,7 +46,7 @@ class PersistenceContextTest {
             assertNotNull(firstEntity.getId());
             assertEquals("First entity", firstEntity.getName());
 
-            SecondEntity secondEntity = new SecondEntity();
+            ManuallyIdentifiedEntity secondEntity = new ManuallyIdentifiedEntity();
             secondEntity.setId(-2L);
             secondEntity.setName("Second entity");
 
@@ -62,12 +62,12 @@ class PersistenceContextTest {
     @Test
     void testDoubleSaveEntity() {
         Long id;
-        FirstEntity entity;
+        AutoIdentifiedEntity entity;
 
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            entity = new FirstEntity();
+            entity = new AutoIdentifiedEntity();
             entity.setName("Third entity");
 
             session.save(entity);
@@ -96,7 +96,7 @@ class PersistenceContextTest {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            SecondEntity secondEntity = new SecondEntity();
+            ManuallyIdentifiedEntity secondEntity = new ManuallyIdentifiedEntity();
             secondEntity.setId(NumberUtils.LONG_ONE);
             secondEntity.setName(StringUtils.EMPTY);
 
@@ -106,7 +106,7 @@ class PersistenceContextTest {
         }
 
         try (Session session = SessionUtil.getSession()) {
-            SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            ManuallyIdentifiedEntity entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
             Transaction tx = session.beginTransaction();
 
             entity.setName("Updated entity");
@@ -125,7 +125,7 @@ class PersistenceContextTest {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            FirstEntity missingEntity = session.get(FirstEntity.class, 100L);
+            AutoIdentifiedEntity missingEntity = session.get(AutoIdentifiedEntity.class, 100L);
             assertNull(missingEntity);
 
             tx.commit();
@@ -139,7 +139,7 @@ class PersistenceContextTest {
             Transaction tx = session.beginTransaction();
 
             assertThrows(ObjectNotFoundException.class,
-                    () -> session.load(FirstEntity.class, 100L));
+                    () -> session.load(AutoIdentifiedEntity.class, 100L));
 
             tx.commit();
         }
@@ -148,7 +148,7 @@ class PersistenceContextTest {
     @Test
     void testMergeEntity() {
         try (Session session = SessionUtil.getSession()) {
-            SecondEntity entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            ManuallyIdentifiedEntity entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
             entity.setName("Merged to the database entity");
 
             Transaction tx = session.beginTransaction();
@@ -157,7 +157,7 @@ class PersistenceContextTest {
 
             tx.commit();
 
-            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
 
             assertEquals("Merged to the database entity", entity.getName());
             assertEquals(NumberUtils.LONG_ONE, entity.getId());
@@ -166,11 +166,11 @@ class PersistenceContextTest {
 
     @Test
     void testSaveChangesOnPersistentState() {
-        SecondEntity entity;
+        ManuallyIdentifiedEntity entity;
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
             entity.setName("Modified entity");
 
             tx.commit();
@@ -182,9 +182,9 @@ class PersistenceContextTest {
 
     @Test
     void testRefreshEntity() {
-        SecondEntity refreshedEntity;
+        ManuallyIdentifiedEntity refreshedEntity;
         try (Session session = SessionUtil.getSession()) {
-            refreshedEntity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            refreshedEntity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
             refreshedEntity.setName("out of synch");
         }
 
@@ -201,9 +201,9 @@ class PersistenceContextTest {
 
     @Test
     void testDirtySession() {
-        SecondEntity entity;
+        ManuallyIdentifiedEntity entity;
         try (Session session = SessionUtil.getSession()) {
-            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
 
             assertFalse(session.isDirty());
 
@@ -215,10 +215,10 @@ class PersistenceContextTest {
 
     @Test
     void testDeletePersistentEntityWithLoadingToMemory() {
-        SecondEntity entity;
+        ManuallyIdentifiedEntity entity;
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
-            entity = session.load(SecondEntity.class, NumberUtils.LONG_ONE);
+            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
 
             session.delete(entity);
 
@@ -228,7 +228,7 @@ class PersistenceContextTest {
         assertNotNull(entity);
 
         try (Session session = SessionUtil.getSession()) {
-            entity = session.get(SecondEntity.class, NumberUtils.LONG_ONE);
+            entity = session.get(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
         }
 
         assertNull(entity);
@@ -236,7 +236,7 @@ class PersistenceContextTest {
 
     @Test
     void testDeleteThroughTransientObjectWithLoadingToMemory() {
-        SecondEntity entity = new SecondEntity();
+        ManuallyIdentifiedEntity entity = new ManuallyIdentifiedEntity();
         entity.setId(2L);
         entity.setName("for removing");
 
@@ -251,7 +251,7 @@ class PersistenceContextTest {
         assertNotNull(entity);
 
         try (Session session = SessionUtil.getSession()) {
-            entity = session.get(SecondEntity.class, 2L);
+            entity = session.get(ManuallyIdentifiedEntity.class, 2L);
         }
 
         assertNull(entity);
@@ -260,12 +260,12 @@ class PersistenceContextTest {
     @Test
     void testForIdentityAndEquality() {
         Long id;
-        SecondEntity entity0;
+        ManuallyIdentifiedEntity entity0;
 
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            SecondEntity secondEntity = new SecondEntity();
+            ManuallyIdentifiedEntity secondEntity = new ManuallyIdentifiedEntity();
             secondEntity.setId(NumberUtils.LONG_MINUS_ONE);
             secondEntity.setName("Second entity");
 
@@ -278,7 +278,7 @@ class PersistenceContextTest {
         }
 
         try(Session session = SessionUtil.getSession()) {
-            entity0 = session.load(SecondEntity.class, NumberUtils.LONG_MINUS_ONE);
+            entity0 = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_MINUS_ONE);
             id = entity0.getId();
 
             assertEquals(NumberUtils.LONG_MINUS_ONE, id);
@@ -286,11 +286,11 @@ class PersistenceContextTest {
         }
 
         try(Session session = SessionUtil.getSession()) {
-            SecondEntity entity1 = session.load(SecondEntity.class, id);
+            ManuallyIdentifiedEntity entity1 = session.load(ManuallyIdentifiedEntity.class, id);
             assertEquals("Second entity", entity1.getName());
             assertEquals(NumberUtils.LONG_MINUS_ONE, entity1.getId());
 
-            SecondEntity entity2 = session.load(SecondEntity.class, id);
+            ManuallyIdentifiedEntity entity2 = session.load(ManuallyIdentifiedEntity.class, id);
             assertEquals("Second entity", entity2.getName());
             assertEquals(NumberUtils.LONG_MINUS_ONE, entity2.getId());
 

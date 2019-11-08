@@ -5,20 +5,19 @@ package alekseybykov.portfolio.hibernate.entities;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * Entity with manually assigned identifier.
+ * Entity with auto generated identifier.
  *
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-06
  */
 @Entity
 @Data
-public final class SecondEntity {
+public final class AutoIdentifiedEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

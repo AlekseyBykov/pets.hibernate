@@ -5,19 +5,20 @@ package alekseybykov.portfolio.hibernate.entities;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
- * Entity with auto generated identifier.
+ * Entity with manually assigned identifier.
  *
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-06
  */
 @Entity
 @Data
-public final class FirstEntity {
+public final class ManuallyIdentifiedEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
