@@ -17,17 +17,17 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">validate</property>
 
-        <mapping class="alekseybykov.portfolio.hibernate.entities.core.SecondEntity"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.core.FirstEntity"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.SecondEntity"/>
+        <mapping class="alekseybykov.portfolio.hibernate.entities.FirstEntity"/>
 
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectional.Department"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.unidirectional.Employee"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional.University"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.many2one.bidirectional.Student"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional.Person"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.unidirectional.Passport"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional.Book"/>
-        <mapping class="alekseybykov.portfolio.hibernate.entities.mapping.one2one.fkassoc.bidirectional.Publisher"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.many2one.unidirectional.Department"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.many2one.unidirectional.Employee"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.many2one.bidirectional.University"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.many2one.bidirectional.Student"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.unidirectional.Person"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.unidirectional.Passport"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional.Book"/>
+        <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional.Publisher"/>
 
     </session-factory>
 
