@@ -4,8 +4,8 @@
 package alekseybykov.portfolio.hibernate.context;
 
 import alekseybykov.portfolio.hibernate.TestContextHook;
-import alekseybykov.portfolio.hibernate.entities.AutoIdentifiedEntity;
-import alekseybykov.portfolio.hibernate.entities.ManuallyIdentifiedEntity;
+import alekseybykov.portfolio.hibernate.annotations.id.AutoIdentifiedEntity;
+import alekseybykov.portfolio.hibernate.annotations.id.ManuallyIdentifiedEntity;
 import common.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

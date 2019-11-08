@@ -1,7 +1,7 @@
 //
 // Feel free to use these solutions in your work.
 //
-package alekseybykov.portfolio.hibernate.entities;
+package alekseybykov.portfolio.hibernate.annotations.id;
 
 import lombok.Data;
 

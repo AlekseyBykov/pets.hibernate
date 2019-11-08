@@ -4,8 +4,6 @@
 package alekseybykov.portfolio.hibernate.annotations.id;
 
 import alekseybykov.portfolio.hibernate.TestContextHook;
-import alekseybykov.portfolio.hibernate.entities.AutoIdentifiedEntity;
-import alekseybykov.portfolio.hibernate.entities.ManuallyIdentifiedEntity;
 import common.utils.SessionUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,13 +22,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith({TestContextHook.class})
 class IdTest {
 
+    private final String name = "Entity";
+
     @Test
+    @DisplayName("Save auto identified entity without explicitly assigned identifier")
     void testSaveAutoIdentifiedEntityWithoutExplicitlyAssignedId() {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             AutoIdentifiedEntity entity = new AutoIdentifiedEntity();
-            entity.setName("Another first entity");
+            entity.setName(name);
 
             entity.setId(321L); // will be ignored
 
@@ -40,18 +41,19 @@ class IdTest {
 
             assertNotNull(id);
             assertNotEquals(321L, id);
-            assertEquals("Another first entity", entity.getName());
+            assertEquals(name, entity.getName());
 
             tx.commit();
         }
     }
 
     @Test
+    @DisplayName("Save manually identified entity without explicitly assigned identifier")
     void testSaveManuallyIdentifiedEntityWithoutExplicitlyAssignedId() {
         try (Session session = SessionUtil.getSession()) {
 
             ManuallyIdentifiedEntity entity = new ManuallyIdentifiedEntity();
-            entity.setName("Another second entity");
+            entity.setName(name);
 
             assertThrows(IdentifierGenerationException.class,
                 () -> session.save(entity));
@@ -59,17 +61,18 @@ class IdTest {
     }
 
     @Test
+    @DisplayName("Save manually identified entity with explicitly assigned identifier")
     void testSaveManuallyIdentifiedEntityWithExplicitlyAssignedId() {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             ManuallyIdentifiedEntity entity = new ManuallyIdentifiedEntity();
             entity.setId(2L);
-            entity.setName("Another second entity");
+            entity.setName(name);
 
             session.save(entity);
             assertNotNull(entity.getId());
-            assertEquals("Another second entity", entity.getName());
+            assertEquals(name, entity.getName());
 
             tx.commit();
         }
