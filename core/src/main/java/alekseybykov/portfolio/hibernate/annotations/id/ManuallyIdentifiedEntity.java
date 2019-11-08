@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Entity with manually assigned identifier.
@@ -15,8 +16,9 @@ import javax.persistence.Id;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-06
  */
-@Entity
 @Data
+@Entity
+@Table(name = "manually_identified")
 public final class ManuallyIdentifiedEntity {
     @Id
     private Long id;

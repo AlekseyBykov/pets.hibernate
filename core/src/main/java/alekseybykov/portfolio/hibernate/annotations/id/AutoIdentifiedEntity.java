@@ -13,8 +13,9 @@ import javax.persistence.*;
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-06
  */
-@Entity
 @Data
+@Entity
+@Table(name = "auto_identified")
 public final class AutoIdentifiedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
