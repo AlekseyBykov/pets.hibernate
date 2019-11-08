@@ -8,12 +8,14 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
+ * Entity with auto generated identifier.
+ *
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-06-06
  */
 @Entity
 @Data
-public class FirstEntity {
+public final class FirstEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

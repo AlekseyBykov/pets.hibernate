@@ -12,7 +12,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.id.IdentifierGenerationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersistenceContextTest {
 
     @Test
-    void saveEntities() {
+    @DisplayName("Change entity state from transient to persistent")
+    void testChangeObjectStateFromTransientToPersistent() {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -47,7 +47,7 @@ class PersistenceContextTest {
             assertEquals("First entity", firstEntity.getName());
 
             SecondEntity secondEntity = new SecondEntity();
-            secondEntity.setId(NumberUtils.LONG_ONE);
+            secondEntity.setId(-2L);
             secondEntity.setName("Second entity");
 
             session.save(secondEntity);
@@ -138,57 +138,8 @@ class PersistenceContextTest {
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            FirstEntity missingEntity = session.load(FirstEntity.class, 100L);
-
-            ObjectNotFoundException thrown =
-                    assertThrows(ObjectNotFoundException.class,
-                            missingEntity::getName);
-
-            assertNotNull(thrown);
-
-            tx.commit();
-        }
-    }
-
-    @Test
-    void firstTestSaveEntityWithoutExplicitlyAssignedId() {
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            FirstEntity entity = new FirstEntity();
-            entity.setName("Another first entity");
-
-            session.save(entity);
-            assertNotNull(entity.getId());
-            assertEquals("Another first entity", entity.getName());
-
-            tx.commit();
-        }
-    }
-
-    @Test
-    void secondTestSaveEntityWithoutExplicitlyAssignedId() {
-        try (Session session = SessionUtil.getSession()) {
-            SecondEntity entity = new SecondEntity();
-            entity.setName("Another second entity");
-
-            assertThrows(IdentifierGenerationException.class,
-                    () -> session.save(entity));
-        }
-    }
-
-    @Test
-    void thirdTestSaveEntityWithExplicitlyAssignedId() {
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            SecondEntity entity = new SecondEntity();
-            entity.setId(2L);
-            entity.setName("Another second entity");
-
-            session.save(entity);
-            assertNotNull(entity.getId());
-            assertEquals("Another second entity", entity.getName());
+            assertThrows(ObjectNotFoundException.class,
+                    () -> session.load(FirstEntity.class, 100L));
 
             tx.commit();
         }
