@@ -30,7 +30,7 @@
         <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional.Publisher"/>
 
         <mapping class="alekseybykov.portfolio.hibernate.annotations.enumerated.Week"/>
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.singletable.Report"/>
 
     </session-factory>
-
 </hibernate-configuration>

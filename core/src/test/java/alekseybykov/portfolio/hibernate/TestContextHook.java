@@ -59,6 +59,7 @@ public class TestContextHook implements BeforeAllCallback, ExtensionContext.Stor
             session.createQuery("delete from Person").executeUpdate();
             session.createQuery("delete from Passport").executeUpdate();
             session.createQuery("delete from Week").executeUpdate();
+            session.createQuery("delete from Report").executeUpdate();
 
             tx.commit();
         }
