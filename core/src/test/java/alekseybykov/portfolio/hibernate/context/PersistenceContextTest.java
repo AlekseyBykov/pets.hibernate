@@ -84,6 +84,20 @@ class PersistenceContextTest {
             AutoIdentifiedEntity entity = session.load(AutoIdentifiedEntity.class, id);
             assertNotEquals("h", entity.getName());
             assertEquals("d", entity.getName());
+
+            Transaction tx = session.beginTransaction();
+
+            entity.setName("i");
+            session.merge(entity);
+
+            tx.commit();
+
+            // entity in persistent state
+        }
+
+        try (Session session = SessionUtil.getSession()) {
+            AutoIdentifiedEntity entity = session.load(AutoIdentifiedEntity.class, id);
+            assertEquals("i", entity.getName());
         }
     }
 }
