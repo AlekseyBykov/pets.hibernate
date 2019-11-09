@@ -1,6 +1,6 @@
 create table if not exists report (
     id bigserial not null,
-    DTYPE text not null,
+    DTYPE text,
     format text,
     typeface text,
     quoted boolean default true,
