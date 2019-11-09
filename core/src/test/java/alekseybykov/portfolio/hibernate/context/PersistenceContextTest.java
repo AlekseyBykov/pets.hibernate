@@ -28,9 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Tests for persistence context concept")
 class PersistenceContextTest {
 
-    private final String aName = "A";
-    private final String bName = "B";
-
     @Test
     @DisplayName("Change entity states")
     void testChangeObjectStates() {
@@ -41,7 +38,7 @@ class PersistenceContextTest {
 
             // entity in transient state
             AutoIdentifiedEntity entity = new AutoIdentifiedEntity();
-            entity.setName(aName);
+            entity.setName("A");
 
             // similarly -- session.persist(entity);
             session.save(entity);
@@ -49,7 +46,7 @@ class PersistenceContextTest {
             id = entity.getId();
 
             assertNotNull(entity.getId());
-            assertEquals(aName, entity.getName());
+            assertEquals("A", entity.getName());
 
             // entity in persistent state
             entity.setName("a");
