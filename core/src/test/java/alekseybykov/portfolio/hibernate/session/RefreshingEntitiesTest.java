@@ -13,49 +13,48 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * @author  aleksey.n.bykov@gmail.com
  * @version 2019-11-09
  */
 @ExtendWith({TestContextHook.class})
-@DisplayName("Tests for merging entities")
-class MergingEntitiesTest {
+@DisplayName("Tests for refreshing entities")
+class RefreshingEntitiesTest {
 
     @Test
-    @DisplayName("Save and detach entity and then merge new changes to the database")
-    void testMergeDetachedEntitysStateToTheDatabase() {
-        Long id;
+    @DisplayName("Save and detach entity and then refresh original state from the database")
+    void testRefreshDetachedEntitysStateFromTheDatabase() {
         AutoIdentifiedEntity entity;
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
             entity = new AutoIdentifiedEntity();
-            entity.setName("l");
+            entity.setName("n");
 
             session.save(entity);
-            id = entity.getId();
 
             tx.commit();
         }
 
-        // entity in detached state
+        // will be ignored
+        entity.setName("a");
+        entity.setName("b");
+        entity.setName("c");
+        entity.setName("d");
 
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
-            entity.setName("r");
-            session.merge(entity);
+            session.refresh(entity);
             tx.commit();
-            // entity in persistent state
         }
 
         try (Session session = SessionUtil.getSession()) {
-            AutoIdentifiedEntity loadedEntity = session.load(AutoIdentifiedEntity.class, id);
+            AutoIdentifiedEntity loadedEntity = session.load(AutoIdentifiedEntity.class, entity.getId());
             assertEquals(loadedEntity.getId(), entity.getId());
 
-            assertEquals("r", entity.getName());
-            assertNotEquals("l", entity.getName());
+            assertEquals("n", loadedEntity.getName());
+            assertEquals("n", entity.getName());
         }
     }
 }
