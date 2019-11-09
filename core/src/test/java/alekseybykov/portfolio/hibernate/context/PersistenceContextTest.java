@@ -5,11 +5,7 @@ package alekseybykov.portfolio.hibernate.context;
 
 import alekseybykov.portfolio.hibernate.TestContextHook;
 import alekseybykov.portfolio.hibernate.annotations.id.AutoIdentifiedEntity;
-import alekseybykov.portfolio.hibernate.annotations.id.ManuallyIdentifiedEntity;
 import common.utils.SessionUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.DisplayName;
@@ -36,13 +32,14 @@ class PersistenceContextTest {
     private final String bName = "B";
 
     @Test
-    @DisplayName("Change entity state from transient to persistent")
-    void testChangeObjectStateFromTransientToPersistent() {
+    @DisplayName("Change entity states")
+    void testChangeObjectStates() {
+
         Long id;
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            // object in transient state
+            // entity in transient state
             AutoIdentifiedEntity entity = new AutoIdentifiedEntity();
             entity.setName(aName);
 
@@ -54,7 +51,7 @@ class PersistenceContextTest {
             assertNotNull(entity.getId());
             assertEquals(aName, entity.getName());
 
-            // object in persistent state
+            // entity in persistent state
             entity.setName("a");
             entity.setName("b");
             entity.setName("c");
@@ -63,244 +60,33 @@ class PersistenceContextTest {
             tx.commit();
         }
 
+        // session closed, entity in detached state
+
         try (Session session = SessionUtil.getSession()) {
             AutoIdentifiedEntity entity = session.load(AutoIdentifiedEntity.class, id);
+
+            // entity in persistent state
+
             assertEquals("d", entity.getName());
-        }
-    }
 
-    @Test
-    void testDoubleSaveEntity() {
-        Long id;
-        AutoIdentifiedEntity entity;
+            entity.setName("e");
 
-        try (Session session = SessionUtil.getSession()) {
+            // entity in detached state, changes will be ignored
+            session.detach(entity);
+
             Transaction tx = session.beginTransaction();
 
-            entity = new AutoIdentifiedEntity();
-            entity.setName("Third entity");
-
-            session.save(entity);
-            id = entity.getId();
-
-            assertNotNull(id);
+            entity.setName("f");
+            entity.setName("g");
+            entity.setName("h");
 
             tx.commit();
         }
 
         try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            entity.setName("Fourth entity");
-            session.save(entity);
-
-            tx.commit();
-        }
-
-        assertNotEquals(id, entity.getId());
-        assertEquals("Fourth entity", entity.getName());
-    }
-
-    @Test
-    void testSaveOrUpdateEntity() {
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            ManuallyIdentifiedEntity secondEntity = new ManuallyIdentifiedEntity();
-            secondEntity.setId(NumberUtils.LONG_ONE);
-            secondEntity.setName(StringUtils.EMPTY);
-
-            session.save(secondEntity);
-
-            tx.commit();
-        }
-
-        try (Session session = SessionUtil.getSession()) {
-            ManuallyIdentifiedEntity entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-            Transaction tx = session.beginTransaction();
-
-            entity.setName("Updated entity");
-
-            session.saveOrUpdate(entity);
-            tx.commit();
-
-            assertEquals(NumberUtils.LONG_ONE, entity.getId());
-            assertEquals("Updated entity", entity.getName());
-        }
-    }
-
-    @Test
-    @DisplayName("Get a non-existent entity by identifier")
-    void testGetMissingEntity() {
-        try (Session session = SessionUtil.getSession()) {
-            AutoIdentifiedEntity missingEntity = session.get(AutoIdentifiedEntity.class, 100L);
-            assertNull(missingEntity);
-        }
-    }
-
-    @Test
-    @DisplayName("Load a non-existent entity by identifier through proxy")
-    void testLoadMissingEntity() {
-        try (Session session = SessionUtil.getSession()) {
-            assertThrows(ObjectNotFoundException.class,
-                () -> session.load(AutoIdentifiedEntity.class, 100L));
-        }
-    }
-
-    @Test
-    void testMergeEntity() {
-        try (Session session = SessionUtil.getSession()) {
-            ManuallyIdentifiedEntity entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-            entity.setName("Merged to the database entity");
-
-            Transaction tx = session.beginTransaction();
-
-            session.merge(entity);
-
-            tx.commit();
-
-            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-
-            assertEquals("Merged to the database entity", entity.getName());
-            assertEquals(NumberUtils.LONG_ONE, entity.getId());
-        }
-    }
-
-    @Test
-    void testSaveChangesOnPersistentState() {
-        ManuallyIdentifiedEntity entity;
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-            entity.setName("Modified entity");
-
-            tx.commit();
-        }
-
-        assertEquals("Modified entity", entity.getName());
-        assertEquals(NumberUtils.LONG_ONE, entity.getId());
-    }
-
-    @Test
-    void testRefreshEntity() {
-        ManuallyIdentifiedEntity refreshedEntity;
-        try (Session session = SessionUtil.getSession()) {
-            refreshedEntity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-            refreshedEntity.setName("out of synch");
-        }
-
-        assertEquals("out of synch", refreshedEntity.getName());
-        assertEquals(NumberUtils.LONG_ONE, refreshedEntity.getId());
-
-        try (Session session = SessionUtil.getSession()) {
-            session.refresh(refreshedEntity);
-        }
-
-        assertNotEquals("out of synch", refreshedEntity.getName());
-        assertEquals(NumberUtils.LONG_ONE, refreshedEntity.getId());
-    }
-
-    @Test
-    void testDirtySession() {
-        ManuallyIdentifiedEntity entity;
-        try (Session session = SessionUtil.getSession()) {
-            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-
-            assertFalse(session.isDirty());
-
-            entity.setName("some changes");
-
-            assertTrue(session.isDirty());
-        }
-    }
-
-    @Test
-    void testDeletePersistentEntityWithLoadingToMemory() {
-        ManuallyIdentifiedEntity entity;
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-            entity = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-
-            session.delete(entity);
-
-            tx.commit();
-        }
-
-        assertNotNull(entity);
-
-        try (Session session = SessionUtil.getSession()) {
-            entity = session.get(ManuallyIdentifiedEntity.class, NumberUtils.LONG_ONE);
-        }
-
-        assertNull(entity);
-    }
-
-    @Test
-    void testDeleteThroughTransientObjectWithLoadingToMemory() {
-        ManuallyIdentifiedEntity entity = new ManuallyIdentifiedEntity();
-        entity.setId(2L);
-        entity.setName("for removing");
-
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            session.delete(entity);
-
-            tx.commit();
-        }
-
-        assertNotNull(entity);
-
-        try (Session session = SessionUtil.getSession()) {
-            entity = session.get(ManuallyIdentifiedEntity.class, 2L);
-        }
-
-        assertNull(entity);
-    }
-
-    @Test
-    void testForIdentityAndEquality() {
-        Long id;
-        ManuallyIdentifiedEntity entity0;
-
-        try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            ManuallyIdentifiedEntity secondEntity = new ManuallyIdentifiedEntity();
-            secondEntity.setId(NumberUtils.LONG_MINUS_ONE);
-            secondEntity.setName("Second entity");
-
-            session.save(secondEntity);
-
-            assertNotNull(secondEntity.getId());
-            assertEquals("Second entity", secondEntity.getName());
-
-            tx.commit();
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            entity0 = session.load(ManuallyIdentifiedEntity.class, NumberUtils.LONG_MINUS_ONE);
-            id = entity0.getId();
-
-            assertEquals(NumberUtils.LONG_MINUS_ONE, id);
-            assertEquals("Second entity", entity0.getName());
-        }
-
-        try(Session session = SessionUtil.getSession()) {
-            ManuallyIdentifiedEntity entity1 = session.load(ManuallyIdentifiedEntity.class, id);
-            assertEquals("Second entity", entity1.getName());
-            assertEquals(NumberUtils.LONG_MINUS_ONE, entity1.getId());
-
-            ManuallyIdentifiedEntity entity2 = session.load(ManuallyIdentifiedEntity.class, id);
-            assertEquals("Second entity", entity2.getName());
-            assertEquals(NumberUtils.LONG_MINUS_ONE, entity2.getId());
-
-            assertEquals(entity1, entity2);
-            assertTrue(entity2 == entity1);
-
-            assertEquals(entity0, entity1);
-            assertFalse(entity0 == entity1);
+            AutoIdentifiedEntity entity = session.load(AutoIdentifiedEntity.class, id);
+            assertNotEquals("h", entity.getName());
+            assertEquals("d", entity.getName());
         }
     }
 }
