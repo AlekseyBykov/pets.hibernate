@@ -32,30 +32,40 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Tests for persistence context concept")
 class PersistenceContextTest {
 
+    private final String aName = "A";
+    private final String bName = "B";
+
     @Test
     @DisplayName("Change entity state from transient to persistent")
     void testChangeObjectStateFromTransientToPersistent() {
+        Long id;
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
-            AutoIdentifiedEntity firstEntity = new AutoIdentifiedEntity();
-            firstEntity.setName("First entity");
+            // object in transient state
+            AutoIdentifiedEntity entity = new AutoIdentifiedEntity();
+            entity.setName(aName);
 
-            session.save(firstEntity);
+            // similarly -- session.persist(entity);
+            session.save(entity);
 
-            assertNotNull(firstEntity.getId());
-            assertEquals("First entity", firstEntity.getName());
+            id = entity.getId();
 
-            ManuallyIdentifiedEntity secondEntity = new ManuallyIdentifiedEntity();
-            secondEntity.setId(-2L);
-            secondEntity.setName("Second entity");
+            assertNotNull(entity.getId());
+            assertEquals(aName, entity.getName());
 
-            session.save(secondEntity);
-
-            assertNotNull(secondEntity.getId());
-            assertEquals("Second entity", secondEntity.getName());
+            // object in persistent state
+            entity.setName("a");
+            entity.setName("b");
+            entity.setName("c");
+            entity.setName("d");
 
             tx.commit();
+        }
+
+        try (Session session = SessionUtil.getSession()) {
+            AutoIdentifiedEntity entity = session.load(AutoIdentifiedEntity.class, id);
+            assertEquals("d", entity.getName());
         }
     }
 
@@ -123,12 +133,8 @@ class PersistenceContextTest {
     @DisplayName("Get a non-existent entity by identifier")
     void testGetMissingEntity() {
         try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
             AutoIdentifiedEntity missingEntity = session.get(AutoIdentifiedEntity.class, 100L);
             assertNull(missingEntity);
-
-            tx.commit();
         }
     }
 
@@ -136,12 +142,8 @@ class PersistenceContextTest {
     @DisplayName("Load a non-existent entity by identifier through proxy")
     void testLoadMissingEntity() {
         try (Session session = SessionUtil.getSession()) {
-            Transaction tx = session.beginTransaction();
-
             assertThrows(ObjectNotFoundException.class,
-                    () -> session.load(AutoIdentifiedEntity.class, 100L));
-
-            tx.commit();
+                () -> session.load(AutoIdentifiedEntity.class, 100L));
         }
     }
 
