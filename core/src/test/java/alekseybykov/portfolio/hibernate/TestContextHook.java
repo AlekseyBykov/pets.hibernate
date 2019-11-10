@@ -50,6 +50,7 @@ public class TestContextHook implements BeforeAllCallback, ExtensionContext.Stor
         try (Session session = SessionUtil.getSession()) {
             Transaction tx = session.beginTransaction();
 
+            // bulk delete
             session.createQuery("delete from AutoIdentifiedEntity").executeUpdate();
             session.createQuery("delete from ManuallyIdentifiedEntity").executeUpdate();
             session.createQuery("delete from Student").executeUpdate();

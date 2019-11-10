@@ -30,9 +30,14 @@
         <mapping class="alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional.Publisher"/>
 
         <mapping class="alekseybykov.portfolio.hibernate.annotations.enumerated.Week"/>
+
         <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.singletable.Report"/>
         <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.singletable.PdfReport"/>
         <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.singletable.CsvReport"/>
+
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.joined.Document"/>
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.joined.EmploymentAgreement"/>
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.joined.BusinessPlan"/>
 
     </session-factory>
 </hibernate-configuration>
