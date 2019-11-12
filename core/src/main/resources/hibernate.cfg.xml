@@ -39,5 +39,9 @@
         <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.joined.EmploymentAgreement"/>
         <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.joined.BusinessPlan"/>
 
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.mappedsuperclass.Typeface"/>
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.mappedsuperclass.Glyphic"/>
+        <mapping class="alekseybykov.portfolio.hibernate.inheritance.strategies.mappedsuperclass.Modern"/>
+
     </session-factory>
 </hibernate-configuration>
