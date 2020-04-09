@@ -1,6 +1,3 @@
-//
-// Feel free to use these solutions in your work.
-//
 package alekseybykov.portfolio.hibernate.mapping.one2one.fkassoc.bidirectional;
 
 import lombok.Data;

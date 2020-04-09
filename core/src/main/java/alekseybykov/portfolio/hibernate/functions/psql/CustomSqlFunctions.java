@@ -1,6 +1,3 @@
-//
-// Feel free to use these solutions in your work.
-//
 package alekseybykov.portfolio.hibernate.functions.psql;
 
 import org.hibernate.boot.MetadataBuilder;
@@ -10,7 +7,6 @@ import org.hibernate.type.StandardBasicTypes;
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
  * @since   2019-09-02
  */
 public class CustomSqlFunctions implements MetadataBuilderContributor {

@@ -1,6 +1,3 @@
-//
-// Feel free to use these solutions in your work.
-//
 package common.utils;
 
 import org.hibernate.Session;
@@ -11,7 +8,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
  * @author  aleksey.n.bykov@gmail.com
- * @version 1.0
  * @since   2019-06-06
  */
 public final class SessionUtil {

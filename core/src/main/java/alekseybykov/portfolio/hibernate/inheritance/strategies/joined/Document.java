@@ -1,6 +1,3 @@
-//
-// Feel free to use these solutions in your work.
-//
 package alekseybykov.portfolio.hibernate.inheritance.strategies.joined;
 
 import lombok.Data;
