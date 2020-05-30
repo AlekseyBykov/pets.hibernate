@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * At the end of the unit of work this actions are performed
  * in database (as DML).
  *
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-06-09
+ * @author Aleksey Bykov
+ * @since 09.06.2019
  */
 @ExtendWith({TestContextHook.class})
 @DisplayName("Tests for persistence context concept")

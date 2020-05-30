@@ -5,8 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-08
+ * @author Aleksey Bykov
+ * @since 08.11.2019
  */
 @Entity
 @Data

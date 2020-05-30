@@ -10,8 +10,8 @@ import javax.persistence.Table;
 /**
  * Entity with manually assigned identifier.
  *
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-06-06
+ * @author Aleksey Bykov
+ * @since 06.06.2019
  */
 @Data
 @Entity

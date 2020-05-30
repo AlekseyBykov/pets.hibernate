@@ -11,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-10-13
+ * @author Aleksey Bykov
+ * @since 12.10.2019
  */
 public class TestContextHook implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
 

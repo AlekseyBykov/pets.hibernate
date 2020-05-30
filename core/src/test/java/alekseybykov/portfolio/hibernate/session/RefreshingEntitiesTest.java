@@ -10,10 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-09
+ * @author Aleksey Bykov
+ * @since 09.11.2019
  */
 @ExtendWith({TestContextHook.class})
 @DisplayName("Tests for refreshing entities")

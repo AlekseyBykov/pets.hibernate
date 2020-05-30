@@ -9,8 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-10
+ * @author Aleksey Bykov
+ * @since 10.11.2019
  */
 @Data
 @Entity

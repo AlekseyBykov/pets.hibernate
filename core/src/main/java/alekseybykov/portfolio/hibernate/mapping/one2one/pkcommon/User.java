@@ -1,8 +1,8 @@
 package alekseybykov.portfolio.hibernate.mapping.one2one.pkcommon;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-06-05
+ * @author Aleksey Bykov
+ * @since 07.07.2019
  */
 public class User {
 }

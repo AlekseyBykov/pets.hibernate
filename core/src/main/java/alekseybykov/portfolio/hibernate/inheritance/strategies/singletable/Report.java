@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-09
+ * @author Aleksey Bykov
+ * @since 09.11.2019
  */
 @Data
 @Entity

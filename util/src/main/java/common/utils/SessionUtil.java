@@ -7,8 +7,8 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @since   2019-06-06
+ * @author Aleksey Bykov
+ * @since 06.06.2019
  */
 public final class SessionUtil {
 

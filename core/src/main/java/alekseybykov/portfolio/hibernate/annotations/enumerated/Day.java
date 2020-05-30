@@ -1,8 +1,8 @@
 package alekseybykov.portfolio.hibernate.annotations.enumerated;
 
 /**
- * @author aleksey.n.bykov@gmail.com
- * @version 2019-11-08
+ * @author Aleksey Bykov
+ * @since 08.11.2019
  */
 public enum Day {
     SUNDAY,

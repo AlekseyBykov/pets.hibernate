@@ -12,8 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-08
+ * @author Aleksey Bykov
+ * @since 08.11.2019
  */
 @DisplayName("Tests for identifiers concepts")
 @ExtendWith({TestContextHook.class})

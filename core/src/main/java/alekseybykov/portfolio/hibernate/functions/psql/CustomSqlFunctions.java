@@ -6,8 +6,8 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.type.StandardBasicTypes;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @since   2019-09-02
+ * @author Aleksey Bykov
+ * @since 02.09.2019
  */
 public class CustomSqlFunctions implements MetadataBuilderContributor {
     @Override

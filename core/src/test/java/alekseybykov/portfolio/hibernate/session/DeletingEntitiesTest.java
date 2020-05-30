@@ -12,8 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-10
+ * @author Aleksey Bykov
+ * @since 10.11.2019
  */
 @ExtendWith({TestContextHook.class})
 @DisplayName("Tests for deleting entities")

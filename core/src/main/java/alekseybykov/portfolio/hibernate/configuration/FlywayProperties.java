@@ -9,8 +9,8 @@ import java.util.Properties;
 import static java.util.Objects.isNull;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-10-12
+ * @author Aleksey Bykov
+ * @since 12.10.2019
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FlywayProperties extends Properties {

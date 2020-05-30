@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- * @author  aleksey.n.bykov@gmail.com
- * @version 2019-11-12
+ * @author Aleksey Bykov
+ * @since 12.11.2019
  */
 @Data
 @NoArgsConstructor
